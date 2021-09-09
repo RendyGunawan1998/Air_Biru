@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:galon/extra_screen/tab.dart';
+import 'package:galon/widget/extra_screen/tab.dart';
 import 'dart:math';
 
 import 'package:get/get.dart';

@@ -24,13 +24,13 @@ class Token {
     pref.remove('access_token');
   }
 
-  Future<String?> getAccessToken() async {
+  Future<String> getAccessToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     final data = pref.getString('access_token');
     if (data != null) {
       final accessToken = json.decode(data);
       return accessToken['access_token'];
     }
-    return null;
+    return "";
   }
 }
