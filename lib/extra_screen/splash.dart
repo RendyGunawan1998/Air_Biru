@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:galon/extra_screen/loading.dart';
 import 'package:galon/pages/login.dart';
 import 'package:get/get.dart';
 // import 'package:puskeu/main.dart';

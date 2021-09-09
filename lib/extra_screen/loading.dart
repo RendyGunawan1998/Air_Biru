@@ -11,10 +11,10 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController controller;
-  late Animation<double> animationRotation;
-  late Animation<double> animationRadiusIn;
-  late Animation<double> animationRadiusOut;
+  AnimationController controller;
+  Animation<double> animationRotation;
+  Animation<double> animationRadiusIn;
+  Animation<double> animationRadiusOut;
 
   final double initialradius = 30;
 
@@ -164,7 +164,7 @@ class Dot extends StatelessWidget {
   final double radius;
   final Color color;
 
-  Dot({required this.radius, required this.color});
+  Dot({this.radius, this.color});
 
   @override
   Widget build(BuildContext context) {

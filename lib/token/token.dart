@@ -13,7 +13,7 @@ class Token {
     pref.setString('access_token', token);
   }
 
-  Future<String?> readToken() async {
+  Future<String> readToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     final data = pref.getString('access_token');
     return data;
@@ -24,7 +24,7 @@ class Token {
     pref.remove('access_token');
   }
 
-  Future<String?> getAccessToken() async {
+  Future<String> getAccessToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     final data = pref.getString('access_token');
     if (data != null) {

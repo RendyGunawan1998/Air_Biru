@@ -8,7 +8,7 @@ Future getInfo() async {
   var response = await http.get(
     Uri.parse(url),
     headers: {
-      "Authorization": "Bearer" + await Token().getAccessToken(),
+      "Authorization": "Bearer " + await Token().getAccessToken(),
       //access token dlm bentuk bearer //disini udh ada auth untuk access
     },
   );

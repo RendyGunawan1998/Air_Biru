@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-
+import 'package:get/get.dart';
 import 'extra_screen/splash.dart';
 
 void main() {
@@ -18,22 +17,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// class MyHomePage extends StatefulWidget {
-//   @override
-//   _MyHomePageState createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text("Galon"),
-//         ),
-//         body: Center(
-//           child: LoadingScreen(),
-//         ) // This trailing comma makes auto-formatting nicer for build methods.
-//         );
-//   }
-// }

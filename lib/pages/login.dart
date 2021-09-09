@@ -6,7 +6,6 @@ import 'package:galon/extra_screen/tab.dart';
 import 'package:galon/token/get_data.dart';
 import 'package:galon/token/token.dart';
 import 'package:get/get.dart';
-import 'dart:math' as math;
 
 import 'package:http/http.dart' as http;
 import '../../extra_screen/loading.dart';
@@ -120,7 +119,7 @@ class _LoginAnimationState extends State<LoginAnimation>
                           ]),
                           controller: userTC,
                           onSaved: (value) {
-                            userTC.text = value!;
+                            userTC.text = value;
                           }),
                       SizedBox(height: 15),
                       TextFormField(
@@ -148,7 +147,7 @@ class _LoginAnimationState extends State<LoginAnimation>
                           validator: validatePassword,
                           controller: passTC,
                           onSaved: (value) {
-                            passTC.text = value!;
+                            passTC.text = value;
                           }),
                       SizedBox(height: 10),
                     ],
@@ -188,7 +187,7 @@ class _LoginAnimationState extends State<LoginAnimation>
   }
 
   void _testLogin() async {
-    if (formKey.currentState!.validate()) {
+    if (formKey.currentState.validate()) {
       setState(() {
         visible = true;
       });
