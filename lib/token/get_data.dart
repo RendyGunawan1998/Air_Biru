@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:galon/token/token.dart';
+import 'package:galon/helper/token.dart';
 import 'package:http/http.dart' as http;
 
 Future getInfo() async {

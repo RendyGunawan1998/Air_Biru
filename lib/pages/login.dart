@@ -1,14 +1,14 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:galon/extra_screen/tab.dart';
-import 'package:galon/token/get_data.dart';
-import 'package:galon/token/token.dart';
+import 'package:galon/controller/user_controller.dart';
+import 'package:galon/helper/token.dart';
+import 'package:galon/pages/register.dart';
+import 'package:galon/widget/extra_screen/loading.dart';
+import 'package:galon/widget/extra_screen/tab.dart';
+import 'package:galon/widget/input_widget.dart';
+import 'package:galon/widget/submit_button_widget.dart';
+import 'package:galon/widget/text_putih.dart';
 import 'package:get/get.dart';
-
-import 'package:http/http.dart' as http;
-import '../../extra_screen/loading.dart';
 
 class LoginAnimation extends StatefulWidget {
   _LoginAnimationState createState() => _LoginAnimationState();
@@ -16,6 +16,8 @@ class LoginAnimation extends StatefulWidget {
 
 class _LoginAnimationState extends State<LoginAnimation>
     with SingleTickerProviderStateMixin {
+  UserController userController = UserController();
+
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool _obsecureText = true;
@@ -24,7 +26,7 @@ class _LoginAnimationState extends State<LoginAnimation>
   TextEditingController passTC = new TextEditingController();
 
   // LoginRequestModel requestModel;
-  bool visible = false;
+  bool loading = false;
 
   String message = '';
 
@@ -41,18 +43,6 @@ class _LoginAnimationState extends State<LoginAnimation>
     super.dispose();
   }
 
-  void cekLogin() async {
-    try {
-      // get token from local storage
-      var token = await Token().getAccessToken();
-      if (token != null) {
-        Get.offAll(() => TabBarPage());
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
   String validatePassword(value) {
     if (value.isEmpty) {
       return "Password tidak boleh kosong";
@@ -64,69 +54,55 @@ class _LoginAnimationState extends State<LoginAnimation>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
+      backgroundColor: Colors.blue,
       // Color(0xff21254A),
-      resizeToAvoidBottomInset: true,
-      body: SingleChildScrollView(
-        child: _buildBody(),
-      ),
+      resizeToAvoidBottomInset: false,
+      body: loading == false
+          ? _buildBody()
+          : Center(
+              child: CircularProgressIndicator(
+              color: Colors.white,
+            )),
     );
   }
 
   Widget _buildBody() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Center(
-                // padding: const EdgeInsets.only(left: 7),
-                child: Image.asset(
-                  "assets/images/puskeu.png",
-                  width: 100,
-                  height: 100,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Form(
-                autovalidate: true,
-                key: formKey,
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      TextFormField(
-                          decoration: InputDecoration(
-                              hintText: "Masukkan Email",
-                              labelText: "Email",
-                              prefixIcon: Icon(
-                                Icons.person,
-                                color: Colors.grey,
-                              ),
-                              border: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20))),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: MultiValidator([
-                            RequiredValidator(
-                                errorText: 'Email tidak boleh kosong'),
-                            EmailValidator(errorText: "Perlu @ untuk email"),
-                          ]),
-                          controller: userTC,
-                          onSaved: (value) {
-                            userTC.text = value;
-                          }),
-                      SizedBox(height: 15),
-                      TextFormField(
-                          decoration: InputDecoration(
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(height: 50),
+          Expanded(child: Container()),
+          Image.asset(
+            "assets/images/logo.jpg",
+            width: Get.width * 0.3,
+          ),
+          SizedBox(height: 20),
+          Form(
+            key: formKey,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  InputWidget(
+                    child: TextFormField(
+                        decoration: InputDecoration(
+                          // hintText: "Masukkan Email",
+                          labelText: "Email",
+                          border: InputBorder.none,
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        controller: userTC),
+                  ),
+                  SizedBox(height: 20),
+                  InputWidget(
+                    child: TextFormField(
+                        decoration: InputDecoration(
                             labelText: "Password",
-                            hintText: "Masukkan Kata Sandi",
-                            prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                            // hintText: "Masukkan Kata Sandi",
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _obsecureText
@@ -140,109 +116,96 @@ class _LoginAnimationState extends State<LoginAnimation>
                                 });
                               },
                             ),
-                            border: UnderlineInputBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                          ),
-                          obscureText: _obsecureText,
-                          validator: validatePassword,
-                          controller: passTC,
-                          onSaved: (value) {
-                            passTC.text = value;
-                          }),
-                      SizedBox(height: 10),
-                    ],
+                            border: InputBorder.none),
+                        obscureText: _obsecureText,
+                        controller: passTC),
                   ),
-                ),
-              )
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+          _buildButtonLogin(),
+          SizedBox(height: 20),
+          _buildButtonGoogle(),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                  onTap: () {
+                    Get.to(() => RegisterPage());
+                  },
+                  child: TextPutih(text: 'Daftar Akun')),
+              TextPutih(text: 'Lupa Sandi?'),
+              TextPutih(text: 'Privacy Policy'),
             ],
           ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        _buildButtonLogin(),
-      ],
+          SizedBox(height: 20),
+          Image.asset(
+            "assets/icons/iconMascot.png",
+            width: Get.width * 0.3,
+          ),
+          Expanded(child: Container()),
+          Text(
+            'Air Minum Biru | Versi 1.0.10',
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildButtonLogin() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: 200,
-          child: MaterialButton(
-            onPressed: () {
-              _testLogin();
-            },
-            color: Colors.blueAccent,
-            child: Text(
-              "LOGIN",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          ),
-        ),
-      ],
+    return SubmitButtonWidget(
+      width: Get.width * 0.85,
+      color: Colors.blueAccent[100],
+      function: () {
+        _testLogin();
+      },
+      text: "Masuk Dengan Email",
+      textColor: Colors.white,
+    );
+  }
+
+  Widget _buildButtonGoogle() {
+    return SubmitButtonWidget(
+      width: Get.width * 0.85,
+      color: Colors.red,
+      function: () {
+        print("login Google");
+      },
+      text: "Masuk Dengan Google",
+      textColor: Colors.white,
     );
   }
 
   void _testLogin() async {
-    if (formKey.currentState.validate()) {
+    try {
       setState(() {
-        visible = true;
+        loading = true;
+      });
+      await userController.login(userTC.text, passTC.text).then((value) => {
+            setState(() {
+              message = value;
+            })
+          });
+      print("_testLogin: $message");
+      if (message == "Login Berhasil !!") {
+        Get.offAll(() => LoadingScreen());
+      } else {
+        Get.snackbar("Gagal", message);
+      }
+      setState(() {
+        loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        loading = false;
       });
 
-      var _body = {'email': userTC.text, 'password': passTC.text};
-      print("email " + json.encode(_body));
-      try {
-        var response = await http.post(
-          Uri.parse("https://gebyarairminumbiru.com/api/user/login"),
-          body: json.encode(_body),
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-          },
-        );
-        if (response.statusCode == 200) {
-          Token().saveToken(response.body);
-          print('ini token login : ' + response.body);
-          setState(() {
-            visible = false;
-          });
-
-          await getInfo();
-          Get.offAll(() => LoadingScreen());
-        } else {
-          setState(() {
-            visible = false;
-          });
-          _showAlertDialog(context);
-        }
-      } catch (e) {
-        print(e);
-      }
-    } else {
-      print("validate unsuccess");
+      Get.snackbar("Gagal", "Terjadi Kesalahan");
     }
   }
-}
-
-_showAlertDialog(BuildContext context) {
-  Widget okButton = TextButton(
-    child: Text("OK"),
-    onPressed: () => Navigator.pop(context),
-  );
-  AlertDialog alert = AlertDialog(
-    title: Text("Error"),
-    content: Text("Email atau password yang dimasukkan salah"),
-    actions: [
-      okButton,
-    ],
-  );
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
 }

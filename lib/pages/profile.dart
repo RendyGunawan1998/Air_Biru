@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:galon/pages/login.dart';
+import 'package:get/get.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -26,7 +28,11 @@ class _ProfilePageState extends State<ProfilePage> {
       //   title: Text(),
       // ),
       body: Center(
-        child: Text("Hello"),
+        child: TextButton(
+            onPressed: () {
+              Get.offAll(LoginAnimation());
+            },
+            child: Text('Logout')),
       ),
     );
   }
