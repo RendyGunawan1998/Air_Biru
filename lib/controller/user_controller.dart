@@ -84,4 +84,39 @@ class UserController {
       throw (e);
     }
   }
+
+  Future<String> franchiese(
+      String name, String phone, String subjek, String pesan) async {
+    var _headers = {
+      "Authorization": "Bearer" + await Token().getAccessToken(),
+    };
+    print("ini header franchiese : $_headers");
+
+    var _body = {
+      'name': name,
+      'phone_number': phone,
+      'subject': subjek,
+      'message': pesan
+    };
+    print("fungsi upload franchiese " + json.encode(_body));
+    print(_body);
+    try {
+      var response = await http.post(
+        Uri.parse("https://gebyarairminumbiru.com/api/business/submission"),
+        body: json.encode(_body),
+        headers: {
+          "Authorization": "Bearer" + await Token().getAccessToken(),
+        },
+      );
+
+      var res = json.decode(response.body);
+      if (response.statusCode == 200) {
+        return res['message'];
+      } else {
+        return res['error'];
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
 }
