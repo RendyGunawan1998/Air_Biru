@@ -18,6 +18,9 @@ class _FranchisePageState extends State<FranchisePage> {
   TextEditingController _pesan = TextEditingController();
   final formkey = new GlobalKey<FormState>();
 
+  //INI KOMENTAR UNTUK PUSH
+  //SEBAGAI PEMBEDAs
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
