@@ -24,6 +24,18 @@ class Token {
     pref.remove('access_token');
   }
 
+  Future<void> saveUser(String email, String pass) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('email', email);
+    pref.setString('pass', pass);
+  }
+
+  Future<void> getUser() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.getString("email");
+    pref.getString("pass");
+  }
+
   Future<String> getAccessToken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     final data = pref.getString('access_token');

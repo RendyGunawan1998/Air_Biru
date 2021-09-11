@@ -11,10 +11,10 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController controller;
-  late Animation<double> animationRotation;
-  late Animation<double> animationRadiusIn;
-  late Animation<double> animationRadiusOut;
+  AnimationController? controller;
+  Animation<double>? animationRotation;
+  Animation<double>? animationRadiusIn;
+  Animation<double>? animationRadiusOut;
 
   final double initialradius = 30;
 
@@ -32,36 +32,36 @@ class _LoadingScreenState extends State<LoadingScreen>
       begin: 0,
       end: 1,
     ).animate(CurvedAnimation(
-        parent: controller, curve: Interval(0.0, 1.0, curve: Curves.linear)));
+        parent: controller!, curve: Interval(0.0, 1.0, curve: Curves.linear)));
 
     animationRadiusIn = Tween<double>(
       begin: 1,
       end: 0,
     ).animate(CurvedAnimation(
-        parent: controller,
+        parent: controller!,
         curve: Interval(0.75, 1.0, curve: Curves.elasticIn)));
 
     animationRadiusOut = Tween<double>(
       begin: 0,
       end: 1,
     ).animate(CurvedAnimation(
-        parent: controller,
+        parent: controller!,
         curve: Interval(0.0, 0.25, curve: Curves.elasticOut)));
 
-    controller.addListener(() {
+    controller!.addListener(() {
       setState(() {
-        if (controller.value >= 0.75 && controller.value <= 1.0) {
-          radius = animationRadiusIn.value * initialradius;
-        } else if (controller.value >= 0.0 && controller.value <= 0.25) {
-          radius = animationRadiusOut.value * initialradius;
+        if (controller!.value >= 0.75 && controller!.value <= 1.0) {
+          radius = animationRadiusIn!.value * initialradius;
+        } else if (controller!.value >= 0.0 && controller!.value <= 0.25) {
+          radius = animationRadiusOut!.value * initialradius;
         }
       });
     });
-    controller.repeat();
+    controller!.repeat();
   }
 
   void dispose() {
-    controller.dispose();
+    controller!.dispose();
     super.dispose();
   }
 
@@ -81,7 +81,7 @@ class _LoadingScreenState extends State<LoadingScreen>
       child: Stack(
         children: [
           RotationTransition(
-            turns: animationRotation,
+            turns: animationRotation!,
             child: Stack(
               children: <Widget>[
                 Dot(

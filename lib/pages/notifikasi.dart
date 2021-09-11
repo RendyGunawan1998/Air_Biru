@@ -22,9 +22,15 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(),
-      // ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Center(
+          child: Text(
+            "NOTOFIKASI",
+            style: TextStyle(fontSize: 20, color: Colors.black),
+          ),
+        ),
+      ),
       body: Center(
         child: Text("Hello"),
       ),

@@ -51,4 +51,37 @@ class UserController {
       throw (e);
     }
   }
+
+  Future<String> regis(String name, String phone, String email, String address,
+      String ktp, String password) async {
+    var _body = {
+      'name': name,
+      'phone': phone,
+      'email': email,
+      'address': address,
+      'no_ktp': ktp,
+      'password': password
+    };
+    // print("email " + json.encode(_body));
+    print(_body);
+    try {
+      var response = await http.post(
+        Uri.parse("https://gebyarairminumbiru.com/api/user/register"),
+        body: json.encode(_body),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+        },
+      );
+      print("regis: ${response.body}");
+      var res = json.decode(response.body);
+      if (response.statusCode == 200) {
+        return res['message'];
+      } else {
+        return res['error'];
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
 }

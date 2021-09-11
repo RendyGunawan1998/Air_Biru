@@ -149,7 +149,7 @@ class _LoginAnimationState extends State<LoginAnimation>
           ),
           Expanded(child: Container()),
           Text(
-            'Air Minum Boru | Versi 1.0.10',
+            'Air Minum Biru | Versi 1.0.10',
             style: TextStyle(color: Colors.white),
           ),
         ],
