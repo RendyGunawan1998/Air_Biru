@@ -1,5 +1,11 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:galon/controller/user_controller.dart';
+import 'package:galon/model/banners.dart';
+import 'package:galon/model/posts.dart';
+import 'package:galon/pages/baca.dart';
+import 'package:galon/pages/lihat.dart';
 import 'package:get/get.dart';
 
 class BerandaPage extends StatefulWidget {
@@ -7,90 +13,208 @@ class BerandaPage extends StatefulWidget {
 }
 
 class _BerandaPageState extends State<BerandaPage> {
+  UserController userController = UserController();
+  List<Posts> posts = [];
+  List<Banners> banners = [];
+  bool loadingPosts = true;
+  bool loadingBanner = true;
+  @override
+  void initState() {
+    getListPosts();
+    getListBanner();
+    super.initState();
+  }
+
+  getListPosts() async {
+    try {
+      print("getListPosts");
+      var res = await userController.getPosts();
+      setState(() {
+        loadingPosts = false;
+        posts = res;
+      });
+      print("getListPosts selesai");
+    } catch (e) {
+      setState(() {
+        loadingPosts = false;
+      });
+      print(e);
+    }
+  }
+
+  getListBanner() async {
+    try {
+      print("getListBanner");
+      var resBanner = await userController.getBanner();
+      setState(() {
+        loadingBanner = false;
+        banners = resBanner;
+      });
+      print("getListBanner selesai");
+    } catch (e) {
+      setState(() {
+        loadingBanner = false;
+      });
+      print(e);
+    }
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Container(
-          width: Get.width,
-          height: 50,
-          margin: const EdgeInsets.fromLTRB(0, 12, 0, 10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.white),
-            borderRadius: BorderRadius.all(
-              Radius.circular(30),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   title: ,
+      // ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: Get.width,
+                height: 50,
+                margin: const EdgeInsets.fromLTRB(0, 12, 0, 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(30),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 1,
+                      offset: Offset(0, 0), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border.all(width: 2, color: Colors.blue),
+                        ),
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: Text(
+                        "Nama Orang",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    // SizedBox(
+                    //   width: 10,
+                    // ),
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 3, bottom: 3),
+                        child: Image.asset("assets/images/logo.jpg"),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 2,
-                blurRadius: 1,
-                offset: Offset(0, 0), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all(width: 2, color: Colors.blue),
+            loadingBanner
+                ? Center(child: CircularProgressIndicator())
+                : CarouselSlider(
+                    options: CarouselOptions(height: 150),
+                    items: banners.map((i) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return InkWell(
+                            onTap: () {
+                              Get.to(() => Lihat(
+                                    posts: i,
+                                  ));
+                            },
+                            child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                // decoration: BoxDecoration(color: Colors.amber),
+                                child:
+                                    Image.network(i.image, fit: BoxFit.cover)),
+                          );
+                        },
+                      );
+                    }).toList(),
                   ),
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.blue,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                flex: 6,
-                child: Text(
-                  "Nama Orang",
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              // SizedBox(
-              //   width: 10,
-              // ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 3, bottom: 3),
-                  child: Image.asset("assets/images/logo.jpg"),
-                ),
-              ),
-            ],
-          ),
+            Expanded(
+              child: loadingPosts
+                  ? Center(child: CircularProgressIndicator())
+                  : Container(
+                      padding: EdgeInsets.all(15),
+                      child: StaggeredGridView.countBuilder(
+                        crossAxisCount: 2,
+                        itemCount: posts.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CardBerita(posts: posts[index]);
+                        },
+                        staggeredTileBuilder: (int index) =>
+                            StaggeredTile.fit(1),
+                        mainAxisSpacing: 2.0,
+                        crossAxisSpacing: 2.0,
+                      ),
+                    ),
+            ),
+          ],
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.all(15),
-        child: StaggeredGridView.countBuilder(
-          crossAxisCount: 4,
-          itemCount: 16,
-          itemBuilder: (BuildContext context, int index) => new Container(
-              color: Colors.green,
-              child: new Center(
-                child: new CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: new Text('$index'),
-                ),
-              )),
-          staggeredTileBuilder: (int index) =>
-              new StaggeredTile.count(2, index.isEven ? 2 : 1),
-          mainAxisSpacing: 4.0,
-          crossAxisSpacing: 4.0,
-        ),
-      ),
+    );
+  }
+}
+
+class CardBerita extends StatelessWidget {
+  final Posts posts;
+  const CardBerita({
+    Key? key,
+    required this.posts,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Get.to(() => Baca(posts: posts));
+      },
+      child: Card(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.network(posts.image),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            child: Text(
+              posts.title,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+      )),
     );
   }
 }

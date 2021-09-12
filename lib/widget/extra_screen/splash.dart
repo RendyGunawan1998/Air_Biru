@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:galon/helper/token.dart';
 import 'package:galon/pages/login.dart';
+import 'package:galon/widget/extra_screen/loading.dart';
 import 'package:get/get.dart';
 // import 'package:puskeu/main.dart';
 
@@ -10,6 +12,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  Token token = Token();
+  bool isLogin = false;
+
   @override
   void initState() {
     splashStart();
@@ -23,9 +28,22 @@ class _SplashScreenState extends State<SplashScreen> {
 
   splashStart() async {
     var duration = const Duration(seconds: 2);
-    return Timer(duration, () {
-      Get.offAll(() => LoginAnimation());
-    });
+    await token.getAccessToken().then((value) => () {
+          if (value != "") {
+            setState(() {
+              isLogin = true;
+            });
+          }
+        });
+    if (isLogin) {
+      return Timer(duration, () {
+        Get.offAll(() => LoadingScreen());
+      });
+    } else {
+      return Timer(duration, () {
+        Get.offAll(() => LoginAnimation());
+      });
+    }
   }
 
   @override
