@@ -40,8 +40,8 @@ class Token {
     SharedPreferences pref = await SharedPreferences.getInstance();
     final data = pref.getString('access_token');
     if (data != null) {
-      final accessToken = json.decode(data);
-      return accessToken['access_token'];
+      // final accessToken = json.decode(data);
+      return data;
     }
     return "";
   }
