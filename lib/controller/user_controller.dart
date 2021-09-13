@@ -186,6 +186,7 @@ class UserController {
           "Authorization": "Bearer " + await token.getAccessToken(),
         },
       );
+      print(response.body);
       if (response.statusCode == 200) {
         final dataDecode = json.decode(response.body);
         final data = dataDecode['notifications'];

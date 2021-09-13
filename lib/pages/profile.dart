@@ -1,8 +1,10 @@
 // import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:galon/controller/user_controller.dart';
 // import 'package:galon/controller/user_controller.dart';
 import 'package:galon/helper/token.dart';
+import 'package:galon/model/model_profile.dart';
 // import 'package:galon/model/model_profile.dart';
 import 'package:galon/pages/login.dart';
 import 'package:get/get.dart';
@@ -195,17 +197,32 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
+  UserController userController = UserController();
+  late Profile profile;
+
+  bool loading = true;
+
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      value: 0.0,
-      duration: Duration(seconds: 40),
-      upperBound: 1,
-      lowerBound: -1,
-      vsync: this,
-    )..repeat();
+    getProfile();
+  }
+
+  getProfile() async {
+    try {
+      print("NOTIF");
+      var res = await userController.profil();
+      setState(() {
+        loading = false;
+        profile = res;
+      });
+      print("notif success");
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+      print(e);
+    }
   }
 
   @override
@@ -213,22 +230,28 @@ class _ProfilePageState extends State<ProfilePage>
     super.dispose();
   }
 
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            color: Colors.blue[200],
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Center(
+          child: Text(
+            "My Account",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),
           ),
         ),
-        elevation: 1,
-        title: Text(
-          "My Account",
-          style: TextStyle(fontSize: 20, color: Colors.black),
-        ),
       ),
-      body: _buildBody(),
+      body: loading ? Center(child: CircularProgressIndicator()) : _buildBody(),
     );
   }
 
@@ -236,50 +259,10 @@ class _ProfilePageState extends State<ProfilePage>
     return SingleChildScrollView(
       child: Column(
         children: [
-          _buildAnimation(),
+          _buildName(),
           _buildBodyForm(),
         ],
       ),
-    );
-  }
-
-  Widget _buildAnimation() {
-    var size = MediaQuery.of(context).size;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            AnimatedBuilder(
-                animation: _controller,
-                builder: (BuildContext context, Widget? child) {
-                  return ClipPath(
-                    clipper: DrawClip(_controller.value),
-                    child: Container(
-                      height: size.height * 0.25,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            colors: [Color(0xFF90CAF9), Color(0xFFBBDEFB)]),
-                      ),
-                      child: Opacity(
-                        opacity: 0.7,
-                        child: Image.asset(
-                          "assets/images/logo.jpg",
-                          fit: BoxFit.cover,
-                          height: 80,
-                          width: double.infinity,
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-            _buildName(),
-          ],
-        ),
-      ],
     );
   }
 
@@ -287,9 +270,8 @@ class _ProfilePageState extends State<ProfilePage>
   Widget _buildName() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Card(
-        color: Colors.grey[200],
-        elevation: 0.7,
+      child: Container(
+        decoration: BoxDecoration(color: Colors.white),
         child: ListTile(
           leading: CircleAvatar(
             backgroundColor: Colors.blue[200],
@@ -299,18 +281,24 @@ class _ProfilePageState extends State<ProfilePage>
             ),
           ),
           title: Text(
-            "Ini Nama",
+            profile.name,
             style: TextStyle(
               fontSize: 18,
               color: Colors.black54,
             ),
           ),
           subtitle: Text(
-            "Ini ktp",
+            profile.email,
             style: TextStyle(
               fontSize: 18,
               color: Colors.black54,
             ),
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              print('edit');
+            },
           ),
         ),
       ),
@@ -326,10 +314,6 @@ class _ProfilePageState extends State<ProfilePage>
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                // SizedBox(
-                //   height: 20,
-                // ),
-
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
@@ -362,138 +346,13 @@ class _ProfilePageState extends State<ProfilePage>
       elevation: 0.5,
       child: Column(
         children: <Widget>[
-          _buildEmail(),
-          Divider(
-            height: 1,
-            color: Colors.black54,
-            indent: 7,
-            endIndent: 5,
-          ),
-          _buildTelp(),
-          Divider(
-            height: 1,
-            color: Colors.black54,
-            indent: 7,
-            endIndent: 5,
-          ),
-          _buildAddress(),
-          Divider(
-            height: 1,
-            color: Colors.black54,
-            indent: 7,
-            endIndent: 5,
-          ),
           SizedBox(
             height: 5,
           ),
           _buildSetting(),
+          _buildPassword(),
           _buildLogOut(),
         ],
-      ),
-    );
-  }
-
-  Widget _buildItemData(String tag) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          tag,
-          style: TextStyle(color: Colors.black, fontSize: 16),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildEmail() {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: IntrinsicHeight(
-        child: Row(
-          children: <Widget>[
-            Icon(
-              Icons.email,
-              color: Colors.blue[100],
-              size: 30,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            VerticalDivider(
-              thickness: 1,
-              color: Colors.black54,
-              width: 1,
-              indent: 5,
-              endIndent: 5,
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            _buildItemData("Ini email user")
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTelp() {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: IntrinsicHeight(
-        child: Row(
-          children: <Widget>[
-            Icon(
-              Icons.phone,
-              color: Colors.red[300],
-              size: 30,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            VerticalDivider(
-              thickness: 1,
-              color: Colors.black54,
-              width: 1,
-              indent: 5,
-              endIndent: 5,
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            _buildItemData("Ini no telp user")
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAddress() {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: IntrinsicHeight(
-        child: Row(
-          children: <Widget>[
-            Icon(
-              Icons.location_pin,
-              color: Colors.green,
-              size: 30,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            VerticalDivider(
-              thickness: 1,
-              color: Colors.black54,
-              width: 1,
-              indent: 5,
-              endIndent: 5,
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            _buildItemData("Alamat user"),
-          ],
-        ),
       ),
     );
   }
@@ -506,15 +365,41 @@ class _ProfilePageState extends State<ProfilePage>
           ListTile(
             onTap: () async {},
             title: Text(
-              'Setting',
+              'Upload KTP',
               style: TextStyle(color: Colors.black, fontSize: 16),
             ),
             subtitle: Text(
-              'Pengaturan aplikasi',
+              'Upload Foto KTP',
               style: TextStyle(color: Colors.black54, fontSize: 13),
             ),
             trailing: Icon(
-              Icons.settings,
+              Icons.upload,
+              color: Colors.black,
+              size: 28,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPassword() {
+    return Container(
+      decoration: BoxDecoration(border: Border.all(color: Colors.transparent)),
+      child: Stack(
+        children: [
+          ListTile(
+            onTap: () async {},
+            title: Text(
+              'Ubah Password',
+              style: TextStyle(color: Colors.black, fontSize: 16),
+            ),
+            subtitle: Text(
+              'Ubah Passowrd Anda',
+              style: TextStyle(color: Colors.black54, fontSize: 13),
+            ),
+            trailing: Icon(
+              Icons.lock,
               color: Colors.black,
               size: 28,
             ),

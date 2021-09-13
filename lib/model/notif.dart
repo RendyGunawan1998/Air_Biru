@@ -37,7 +37,7 @@ class Notif {
         description: json["description"],
         type: json["type"],
         isRead: json["is_read"],
-        actionUrl: json["action_url"],
+        actionUrl: json["action_url"] ?? 'kosong',
         image: json["image"],
         userId: json["user_id"],
         createdAt: json["created_at"],
