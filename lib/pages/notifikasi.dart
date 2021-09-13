@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:galon/controller/user_controller.dart';
 import 'package:galon/model/notif.dart';
-import 'package:galon/widget/submit_button_widget.dart';
-import 'package:get/get.dart';
 
 class MyApp extends StatelessWidget {
   @override

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:galon/controller/user_controller.dart';
 import 'package:galon/pages/login.dart';
-import 'package:galon/widget/extra_screen/loading.dart';
 import 'package:galon/widget/input_widget.dart';
 import 'package:galon/widget/submit_button_widget.dart';
 import 'package:get/get.dart';
@@ -15,8 +14,6 @@ class _RegisterPageState extends State<RegisterPage>
   UserController userController = UserController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  bool _obsecureText = true;
 
   TextEditingController namaTC = new TextEditingController();
   TextEditingController telpTC = new TextEditingController();
