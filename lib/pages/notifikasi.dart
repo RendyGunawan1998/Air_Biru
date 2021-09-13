@@ -51,16 +51,17 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
     }
   }
 
-  Future refreshList() async {
-    refreshKey.currentState?.show(atTop: false);
-    setState(() {
-      notifs = getListNotif();
-    });
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -81,9 +82,14 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
               shrinkWrap: true,
               itemCount: notifs.length,
               itemBuilder: (context, i) {
-                return ListTile(
-                  leading: Icon(Icons.person),
-                  title: Text(notifs[i].title),
+                return Card(
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      child: Text((i + 1).toString()),
+                    ),
+                    title: Text(notifs[i].title),
+                    subtitle: Text(notifs[i].description),
+                  ),
                 );
               },
             )),
