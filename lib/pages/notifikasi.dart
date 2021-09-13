@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:galon/controller/user_controller.dart';
+import 'package:galon/model/notif.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -19,21 +21,80 @@ class NotifikasiPage extends StatefulWidget {
 }
 
 class _NotifikasiPageState extends State<NotifikasiPage> {
+  UserController userController = UserController();
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+
+  List<Notif> notifs = [];
+
+  bool loadingNotif = true;
+  @override
+  void initState() {
+    getListNotif();
+    super.initState();
+    // refreshList();
+  }
+
+  getListNotif() async {
+    try {
+      print("NOTIF");
+      var res = await userController.notif();
+      setState(() {
+        loadingNotif = false;
+        notifs = res;
+      });
+      print("notif success");
+    } catch (e) {
+      setState(() {
+        loadingNotif = false;
+      });
+      print(e);
+    }
+  }
+
+  Future refreshList() async {
+    refreshKey.currentState?.show(atTop: false);
+    setState(() {
+      notifs = getListNotif();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        elevation: 0,
         title: Center(
           child: Text(
-            "NOTOFIKASI",
-            style: TextStyle(fontSize: 20, color: Colors.black),
+            "Notifikasi",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),
           ),
         ),
       ),
-      body: Center(
-        child: Text("Hello"),
-      ),
+      body: loadingNotif
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: ListView.builder(
+              // scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: notifs.length,
+              itemBuilder: (context, i) {
+                return ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text(notifs[i].title),
+                );
+              },
+            )),
     );
   }
+
+  // Future _getNotif() async {
+  //   try {
+  //     await userController.notif();
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 }
