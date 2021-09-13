@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:galon/helper/token.dart';
 import 'package:galon/model/banners.dart';
+import 'package:galon/model/model_profile.dart';
+import 'package:galon/model/notif.dart';
 import 'package:galon/model/posts.dart';
 import 'package:http/http.dart' as http;
 
@@ -168,6 +170,46 @@ class UserController {
         return data.map<Banners>((rawPost) {
           return Banners.fromJson(rawPost);
         }).toList();
+      } else {
+        throw ("error saat mengambil data");
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  Future<List<Notif>> notif() async {
+    try {
+      var response = await http.get(
+        Uri.parse("https://gebyarairminumbiru.com/api/user/all/notifications"),
+        headers: {
+          "Authorization": "Bearer " + await token.getAccessToken(),
+        },
+      );
+      if (response.statusCode == 200) {
+        final dataDecode = json.decode(response.body);
+        final data = dataDecode['notifications'];
+        return data.map<Notif>((rawNotif) {
+          return Notif.fromJson(rawNotif);
+        }).toList();
+      } else {
+        throw ("error saat mengambil data");
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  Future<Profile> profil() async {
+    try {
+      var response = await http.get(
+        Uri.parse("https://gebyarairminumbiru.com/api/user/info"),
+        headers: {
+          "Authorization": "Bearer " + await token.getAccessToken(),
+        },
+      );
+      if (response.statusCode == 200) {
+        return Profile.fromJson(jsonDecode(response.body));
       } else {
         throw ("error saat mengambil data");
       }

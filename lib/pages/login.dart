@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:galon/controller/user_controller.dart';
-import 'package:galon/helper/token.dart';
 import 'package:galon/pages/register.dart';
 import 'package:galon/widget/extra_screen/loading.dart';
-import 'package:galon/widget/extra_screen/tab.dart';
 import 'package:galon/widget/input_widget.dart';
 import 'package:galon/widget/submit_button_widget.dart';
 import 'package:galon/widget/text_putih.dart';
