@@ -6,6 +6,7 @@ import 'package:galon/widget/input_widget.dart';
 import 'package:galon/widget/submit_button_widget.dart';
 import 'package:galon/widget/text_putih.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginAnimation extends StatefulWidget {
   _LoginAnimationState createState() => _LoginAnimationState();
@@ -13,6 +14,8 @@ class LoginAnimation extends StatefulWidget {
 
 class _LoginAnimationState extends State<LoginAnimation>
     with SingleTickerProviderStateMixin {
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+
   UserController userController = UserController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -154,6 +157,14 @@ class _LoginAnimationState extends State<LoginAnimation>
     );
   }
 
+  Future<void> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+  }
+
   Widget _buildButtonLogin() {
     return SubmitButtonWidget(
       width: Get.width * 0.85,
@@ -171,7 +182,7 @@ class _LoginAnimationState extends State<LoginAnimation>
       width: Get.width * 0.85,
       color: Colors.red,
       function: () {
-        print("login Google");
+        _handleSignIn();
       },
       text: "Masuk Dengan Google",
       textColor: Colors.white,

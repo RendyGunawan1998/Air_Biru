@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "726133478671",
+    "project_id": "air-minum-biru-5ce60",
+    "storage_bucket": "air-minum-biru-5ce60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726133478671:android:58d4b64f449a4be6d2da7a",
+        "android_client_info": {
+          "package_name": "com.example.galon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726133478671-20ot04099ke3e8d63c7e6tnj25ucgkj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQx32dz4s1N4Dep_cZNyFeHA4Xh0IKj28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726133478671-20ot04099ke3e8d63c7e6tnj25ucgkj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
