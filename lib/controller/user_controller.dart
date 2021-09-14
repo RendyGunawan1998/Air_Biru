@@ -218,4 +218,43 @@ class UserController {
       throw (e);
     }
   }
+
+  Future<String> updateProfile(
+      String nama, String telp, String email, String alamat, String ktp) async {
+    var _url = "https://gebyarairminumbiru.com/api/user/info";
+
+    var _body = {
+      'name': nama,
+      'phone': telp,
+      'email': email,
+      'address': alamat,
+      'no_ktp': ktp
+    };
+    print("ini url di update profile $_url");
+    print("ini body update profile " + json.encode(_body));
+    try {
+      var response = await http.put(
+        Uri.parse(_url),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + await token.getAccessToken(),
+        },
+        body: json.encode(_body),
+        // encoding:
+      );
+      // print(body);
+      print(response);
+      if (response.statusCode == 200) {
+        print(response.body);
+        var res = json.decode(response.body);
+        print(res);
+        return res['message'];
+      } else {
+        throw ("Gagal Update Profile");
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
 }
