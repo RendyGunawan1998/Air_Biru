@@ -6,6 +6,7 @@ import 'package:galon/widget/input_widget.dart';
 import 'package:galon/widget/submit_button_widget.dart';
 import 'package:galon/widget/text_putih.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginAnimation extends StatefulWidget {
   _LoginAnimationState createState() => _LoginAnimationState();
@@ -13,6 +14,8 @@ class LoginAnimation extends StatefulWidget {
 
 class _LoginAnimationState extends State<LoginAnimation>
     with SingleTickerProviderStateMixin {
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+
   UserController userController = UserController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -26,6 +29,8 @@ class _LoginAnimationState extends State<LoginAnimation>
   bool loading = false;
 
   String message = '';
+
+  GoogleSignInAccount? user;
 
   @override
   void initState() {
@@ -154,6 +159,45 @@ class _LoginAnimationState extends State<LoginAnimation>
     );
   }
 
+  Future<void> signInWithGoogle() async {
+    // ============================================
+    setState(() {
+      loading = true;
+    });
+    try {
+      //login gmail
+      GoogleSignInAccount? googleUser;
+      googleUser = await _googleSignIn.signIn();
+
+      // Return null to prevent further exceptions if googleSignInAccount is null
+      if (googleUser == null) {
+        setState(() {
+          loading = false;
+        });
+        return null;
+      }
+      // print(googleUser);
+      // var = {displayName: Frose Kid, email: frosekid@gmail.com, id: 100147284752486204497, photoUrl: https://lh5.googleusercontent.com/-YeOs3WgWIeI/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmULKisnvcbEj9JhktK_X3IK6Kggw/s96-c/photo.jpg};
+
+      // // get token if success
+      await userController.loginGoogle(
+          googleUser.email, googleUser.displayName!);
+      // get UserInfo
+      // await _getAccountInfo();
+
+      // _dismissLoading();
+      Get.offAll(() => LoadingScreen());
+      setState(() {
+        loading = false;
+      });
+    } catch (e) {
+      print(e);
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
   Widget _buildButtonLogin() {
     return SubmitButtonWidget(
       width: Get.width * 0.85,
@@ -171,7 +215,7 @@ class _LoginAnimationState extends State<LoginAnimation>
       width: Get.width * 0.85,
       color: Colors.red,
       function: () {
-        print("login Google");
+        signInWithGoogle();
       },
       text: "Masuk Dengan Google",
       textColor: Colors.white,
