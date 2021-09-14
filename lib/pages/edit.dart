@@ -2,12 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:galon/controller/user_controller.dart';
 import 'package:galon/helper/token.dart';
+import 'package:galon/model/model_profile.dart';
 import 'package:galon/pages/login.dart';
 import 'package:galon/pages/profile.dart';
+import 'package:galon/widget/input_widget.dart';
 import 'package:galon/widget/submit_button_widget.dart';
 import 'package:get/get.dart';
 
 class EditPage extends StatefulWidget {
+  final Profile profile;
+  const EditPage({Key? key, required this.profile}) : super(key: key);
   _EditPageState createState() => _EditPageState();
 }
 
@@ -26,6 +30,13 @@ class _EditPageState extends State<EditPage> {
 
   @override
   void initState() {
+    setState(() {
+      namaTC.text = widget.profile.name;
+      telpTC.text = widget.profile.phone;
+      alamatTC.text = widget.profile.address;
+      emailTC.text = widget.profile.email;
+      ktpTC.text = widget.profile.noKtp;
+    });
     super.initState();
   }
 
@@ -42,38 +53,39 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       // backgroundColor: Colors.blue[200],
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Get.back(),
+        ),
+        backgroundColor: Colors.white,
         elevation: 0,
-        backgroundColor: Colors.blue[100],
         title: Text(
-          "Edit Profile",
+          "Ubah Profile",
           style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+              fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),
         ),
       ),
-      body: _buildBody(),
+      body: loading ? Center(child: CircularProgressIndicator()) : _buildBody(),
     );
   }
 
   Widget _textFormField(IconData icon, String label,
       TextEditingController controller, TextInputType input) {
-    return TextFormField(
-      style: TextStyle(color: Colors.black, fontSize: 16),
-      decoration: InputDecoration(
-        prefixIcon: Icon(
-          icon,
-          color: Colors.black,
-        ),
-        labelText: label,
-        labelStyle:
-            TextStyle(color: myFocusNode.hasFocus ? Colors.blue : Colors.black),
-        border: UnderlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: InputWidget(
+        child: TextFormField(
+          decoration: InputDecoration(
+            labelText: label,
+            border: InputBorder.none,
+          ),
+          controller: controller,
+          keyboardType: input,
         ),
       ),
-      controller: controller,
-      keyboardType: input,
     );
   }
 
@@ -89,65 +101,36 @@ class _EditPageState extends State<EditPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                height: size.height * 0.85,
-                width: double.infinity * 0.1,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      colors: [Color(0xFF90CAF9), Color(0xFFBBDEFB)]),
-                ),
-                child: Opacity(
-                  opacity: 0.7,
-                  child: Image.asset(
-                    "assets/icons/iconMascot.png",
-                    fit: BoxFit.cover,
-                    height: Get.height,
-                    width: double.infinity,
+          Form(
+            key: formKey,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  _textFormField(
+                      Icons.person, "Nama", namaTC, TextInputType.name),
+                  _textFormField(
+                      Icons.phone, "No Telp", telpTC, TextInputType.number),
+                  _textFormField(Icons.location_pin, "Alamat", alamatTC,
+                      TextInputType.streetAddress),
+                  _textFormField(Icons.email, "Email", emailTC,
+                      TextInputType.emailAddress),
+                  _textFormField(Icons.contact_mail_rounded, "No KTP", ktpTC,
+                      TextInputType.number),
+                  _box(25),
+                  SubmitButtonWidget(
+                    width: Get.width * 0.9,
+                    color: Colors.blue,
+                    function: () {
+                      _tryUpdate();
+                    },
+                    text: "Update Profile",
+                    textColor: Colors.white,
                   ),
-                ),
+                ],
               ),
-              Form(
-                key: formKey,
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      _textFormField(
-                          Icons.person, "Nama", namaTC, TextInputType.name),
-                      _textFormField(
-                          Icons.phone, "No Telp", telpTC, TextInputType.number),
-                      _textFormField(Icons.location_pin, "Alamat", alamatTC,
-                          TextInputType.streetAddress),
-                      _textFormField(Icons.email, "Email", emailTC,
-                          TextInputType.emailAddress),
-                      _textFormField(Icons.contact_mail_rounded, "No KTP",
-                          ktpTC, TextInputType.number),
-                      _box(25),
-                      SubmitButtonWidget(
-                        width: Get.width * 0.85,
-                        color: Colors.green[300],
-                        function: () {
-                          print(namaTC.text);
-                          print(telpTC.text);
-                          print(alamatTC.text);
-                          print(emailTC.text);
-                          print(ktpTC.text);
-                          _tryUpdate();
-                        },
-                        text: "Update Profile",
-                        textColor: Colors.white,
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
+            ),
+          )
         ],
       ),
     );
@@ -171,7 +154,7 @@ class _EditPageState extends State<EditPage> {
         _alertSuccess(context);
       } else if (message == "Access Not Allowed") {
         Token().removeToken();
-        Get.offAll(LoginAnimation());
+        Get.back();
       } else {
         Get.snackbar("Gagal edit profile", message);
       }
@@ -191,7 +174,7 @@ class _EditPageState extends State<EditPage> {
     Widget okButton = TextButton(
         child: Text("OK"),
         onPressed: () {
-          Get.offAll(() => ProfilePage());
+          Get.back();
         });
     AlertDialog alert = AlertDialog(
       title: Text("Sukses"),

@@ -30,6 +30,8 @@ class _LoginAnimationState extends State<LoginAnimation>
 
   String message = '';
 
+  GoogleSignInAccount? user;
+
   @override
   void initState() {
     super.initState();
@@ -157,11 +159,42 @@ class _LoginAnimationState extends State<LoginAnimation>
     );
   }
 
-  Future<void> _handleSignIn() async {
+  Future<void> signInWithGoogle() async {
+    // ============================================
+    setState(() {
+      loading = true;
+    });
     try {
-      await _googleSignIn.signIn();
-    } catch (error) {
-      print(error);
+      //login gmail
+      GoogleSignInAccount? googleUser;
+      googleUser = await _googleSignIn.signIn();
+
+      // Return null to prevent further exceptions if googleSignInAccount is null
+      if (googleUser == null) {
+        setState(() {
+          loading = false;
+        });
+        return null;
+      }
+      // print(googleUser);
+      // var = {displayName: Frose Kid, email: frosekid@gmail.com, id: 100147284752486204497, photoUrl: https://lh5.googleusercontent.com/-YeOs3WgWIeI/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmULKisnvcbEj9JhktK_X3IK6Kggw/s96-c/photo.jpg};
+
+      // // get token if success
+      await userController.loginGoogle(
+          googleUser.email, googleUser.displayName!);
+      // get UserInfo
+      // await _getAccountInfo();
+
+      // _dismissLoading();
+      Get.offAll(() => LoadingScreen());
+      setState(() {
+        loading = false;
+      });
+    } catch (e) {
+      print(e);
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -182,7 +215,7 @@ class _LoginAnimationState extends State<LoginAnimation>
       width: Get.width * 0.85,
       color: Colors.red,
       function: () {
-        _handleSignIn();
+        signInWithGoogle();
       },
       text: "Masuk Dengan Google",
       textColor: Colors.white,

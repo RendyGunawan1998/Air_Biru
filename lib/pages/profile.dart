@@ -118,7 +118,9 @@ class _ProfilePageState extends State<ProfilePage>
             icon: Icon(Icons.edit),
             onPressed: () {
               print('edit');
-              Get.to(() => EditPage());
+              Get.to(() => EditPage(
+                    profile: profile,
+                  ));
             },
           ),
         ),

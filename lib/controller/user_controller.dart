@@ -56,6 +56,31 @@ class UserController {
     }
   }
 
+  Future<String> loginGoogle(String email, String name) async {
+    var _body = {'email': email, 'name': name};
+    print("loginGoogle body: " + json.encode(_body));
+    try {
+      var response = await http.post(
+        Uri.parse("https://gebyarairminumbiru.com/api/user/logingoogle"),
+        body: json.encode(_body),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+        },
+      );
+      print("loginGoogle: ${response.body}");
+      var res = json.decode(response.body);
+      if (response.statusCode == 200) {
+        token.saveToken(res['token']);
+        return res['message'];
+      } else {
+        return res['error'];
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
+
   Future<String> regis(String name, String phone, String email, String address,
       String ktp, String password) async {
     var _body = {
