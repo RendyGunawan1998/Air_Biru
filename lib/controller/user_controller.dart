@@ -282,4 +282,36 @@ class UserController {
       throw (e);
     }
   }
+
+  Future<String> updatePassword(String old, String pass, String re) async {
+    var _url = "https://gebyarairminumbiru.com/api/user/ubah-password";
+
+    var _body = {'oldpswd': old, 'newpswd': pass, 'repswd': re};
+    print("ini url di update password $_url");
+    print("ini body update password " + json.encode(_body));
+    try {
+      var response = await http.post(
+        Uri.parse(_url),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + await token.getAccessToken(),
+        },
+        body: json.encode(_body),
+        // encoding:
+      );
+      // print(body);
+      print(response.body);
+      var res = json.decode(response.body);
+      if (response.statusCode == 200) {
+        // print(response.body);
+        // print(res);
+        return res['message'];
+      } else {
+        return res['error'];
+      }
+    } catch (e) {
+      throw ('terjadi kesalahan saat update password');
+    }
+  }
 }
