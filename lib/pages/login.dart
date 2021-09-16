@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:galon/controller/user_controller.dart';
+import 'package:galon/pages/lupa_pass.dart';
 import 'package:galon/pages/register.dart';
 import 'package:galon/widget/extra_screen/loading.dart';
 import 'package:galon/widget/input_widget.dart';
@@ -140,7 +141,11 @@ class _LoginAnimationState extends State<LoginAnimation>
                     Get.to(() => RegisterPage());
                   },
                   child: TextPutih(text: 'Daftar Akun')),
-              TextPutih(text: 'Lupa Sandi?'),
+              InkWell(
+                  onTap: () {
+                    Get.to(() => LupaPass());
+                  },
+                  child: TextPutih(text: 'Lupa Sandi?')),
               TextPutih(text: 'Privacy Policy'),
             ],
           ),
