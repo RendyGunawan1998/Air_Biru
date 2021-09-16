@@ -8,6 +8,7 @@ import 'package:galon/model/model_profile.dart';
 import 'package:galon/pages/edit.dart';
 // import 'package:galon/model/model_profile.dart';
 import 'package:galon/pages/login.dart';
+import 'package:galon/pages/upload_ktp.dart';
 import 'package:get/get.dart';
 import 'dart:math' as math;
 
@@ -184,7 +185,10 @@ class _ProfilePageState extends State<ProfilePage>
       child: Stack(
         children: [
           ListTile(
-            onTap: () async {},
+            onTap: () async {
+              print("Upload ktp");
+              Get.to(() => UploadKTPPage());
+            },
             title: Text(
               'Upload KTP',
               style: TextStyle(color: Colors.black, fontSize: 16),
