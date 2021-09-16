@@ -92,6 +92,17 @@ class _PasswordPageState extends State<PasswordPage> {
               padding: EdgeInsets.all(10),
               child: Column(
                 children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.green[200],
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                          'Bila Anda Menggunakan Login Google Password Default Anda Adalah: 12345678'),
+                    ),
+                  ),
+                  Divider(),
                   _textFormField(
                       Icons.lock, "Password Lama", oldCtrl, TextInputType.text),
                   _textFormField(Icons.lock, "Password Baru", passCtrl,
