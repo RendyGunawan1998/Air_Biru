@@ -228,30 +228,34 @@ class _LoginAnimationState extends State<LoginAnimation>
   }
 
   void _testLogin() async {
-    try {
-      setState(() {
-        loading = true;
-      });
-      await userController.login(userTC.text, passTC.text).then((value) => {
-            setState(() {
-              message = value;
-            })
-          });
-      print("_testLogin: $message");
-      if (message == "Login Berhasil !!") {
-        Get.offAll(() => LoadingScreen());
-      } else {
-        Get.snackbar("Gagal", message);
-      }
-      setState(() {
-        loading = false;
-      });
-    } catch (e) {
-      setState(() {
-        loading = false;
-      });
+    if (userTC.text.isEmpty || passTC.text.isEmpty) {
+      Get.snackbar("Gagal", "Isi Semua Field");
+    } else {
+      try {
+        setState(() {
+          loading = true;
+        });
+        await userController.login(userTC.text, passTC.text).then((value) => {
+              setState(() {
+                message = value;
+              })
+            });
+        print("_testLogin: $message");
+        if (message == "Login Berhasil !!") {
+          Get.offAll(() => LoadingScreen());
+        } else {
+          Get.snackbar("Gagal", message);
+        }
+        setState(() {
+          loading = false;
+        });
+      } catch (e) {
+        setState(() {
+          loading = false;
+        });
 
-      Get.snackbar("Gagal", "Terjadi Kesalahan");
+        Get.snackbar("Gagal", "Terjadi Kesalahan");
+      }
     }
   }
 }

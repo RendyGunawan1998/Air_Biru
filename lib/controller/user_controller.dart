@@ -314,4 +314,70 @@ class UserController {
       throw ('terjadi kesalahan saat update password');
     }
   }
+
+  Future<String> cariUserByEmailPhone(String email, String phone) async {
+    var _url = "https://gebyarairminumbiru.com/api/user/cari-by-email-phone";
+
+    var _body = {'email': email, 'phone': phone};
+    print("ini url di cariUserByEmailPhone $_url");
+    print("ini body cariUserByEmailPhone " + json.encode(_body));
+    try {
+      var response = await http.post(
+        Uri.parse(_url),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          // "Authorization": "Bearer " + await token.getAccessToken(),
+        },
+        body: json.encode(_body),
+        // encoding:
+      );
+      // print(body);
+      print(response.body);
+      var res = json.decode(response.body);
+      if (response.statusCode == 200) {
+        // print(response.body);
+        // print(res);
+        return res['message'];
+      } else {
+        return res['error'];
+      }
+    } catch (e) {
+      throw ('terjadi kesalahan saat cariUserByEmailPhone');
+    }
+  }
+
+  Future<String> ubahPasswordByEmailPhone(
+      String email, String phone, String pass, String re) async {
+    var _url =
+        "https://gebyarairminumbiru.com/api/user/ubah-password-by-email-phone";
+
+    var _body = {'email': email, 'phone': phone, 'newpswd': pass, 'repswd': re};
+    print("ini url di ubahPasswordByEmailPhone $_url");
+    print("ini body ubahPasswordByEmailPhone " + json.encode(_body));
+    try {
+      var response = await http.post(
+        Uri.parse(_url),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          // "Authorization": "Bearer " + await token.getAccessToken(),
+        },
+        body: json.encode(_body),
+        // encoding:
+      );
+      // print(body);
+      print(response.body);
+      var res = json.decode(response.body);
+      if (response.statusCode == 200) {
+        // print(response.body);
+        // print(res);
+        return res['message'];
+      } else {
+        return res['error'];
+      }
+    } catch (e) {
+      throw ('terjadi kesalahan saat ubahPasswordByEmailPhone');
+    }
+  }
 }

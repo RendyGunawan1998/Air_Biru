@@ -38,6 +38,7 @@ dependencies:
   carousel_slider: ^4.0.0
   google_sign_in: ^5.1.0
   image_picker: ^0.7.5
+  url_launcher: ^6.0.10
 
 dev_dependencies:
   flutter_test:

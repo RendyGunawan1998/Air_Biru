@@ -137,36 +137,44 @@ class _EditPageState extends State<EditPage> {
   }
 
   void _tryUpdate() async {
-    try {
-      setState(() {
-        loading = true;
-      });
-      await userController
-          .updateProfile(
-              namaTC.text, telpTC.text, emailTC.text, alamatTC.text, ktpTC.text)
-          .then((value) => {
-                setState(() {
-                  message = value;
-                })
-              });
-      print("update profile: $message");
-      if (message == "Data Berhasil Update !!") {
-        _alertSuccess(context);
-      } else if (message == "Access Not Allowed") {
-        Token().removeToken();
-        Get.back();
-      } else {
-        Get.snackbar("Gagal edit profile", message);
-      }
-      setState(() {
-        loading = false;
-      });
-    } catch (e) {
-      setState(() {
-        loading = false;
-      });
+    if (namaTC.text.isEmpty ||
+        telpTC.text.isEmpty ||
+        emailTC.text.isEmpty ||
+        alamatTC.text.isEmpty ||
+        ktpTC.text.isEmpty) {
+      Get.snackbar("Gagal", "Isi Semua Field");
+    } else {
+      try {
+        setState(() {
+          loading = true;
+        });
+        await userController
+            .updateProfile(namaTC.text, telpTC.text, emailTC.text,
+                alamatTC.text, ktpTC.text)
+            .then((value) => {
+                  setState(() {
+                    message = value;
+                  })
+                });
+        print("update profile: $message");
+        if (message == "Data Berhasil Update !!") {
+          _alertSuccess(context);
+        } else if (message == "Access Not Allowed") {
+          Token().removeToken();
+          Get.back();
+        } else {
+          Get.snackbar("Gagal edit profile", message);
+        }
+        setState(() {
+          loading = false;
+        });
+      } catch (e) {
+        setState(() {
+          loading = false;
+        });
 
-      Get.snackbar("Gagal", "Terjadi Kesalahan");
+        Get.snackbar("Gagal", "Terjadi Kesalahan");
+      }
     }
   }
 
