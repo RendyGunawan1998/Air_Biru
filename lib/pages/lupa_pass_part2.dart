@@ -1,22 +1,23 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:galon/controller/user_controller.dart';
 import 'package:galon/helper/token.dart';
-import 'package:galon/pages/lupa_pass_part2.dart';
+import 'package:galon/pages/login.dart';
 import 'package:galon/widget/input_widget.dart';
 import 'package:galon/widget/submit_button_widget.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class LupaPass extends StatefulWidget {
-  _LupaPassState createState() => _LupaPassState();
+class LupaPassPart2 extends StatefulWidget {
+  final String email;
+  final String phone;
+  const LupaPassPart2({required this.email, required this.phone});
+  _LupaPassPart2State createState() => _LupaPassPart2State();
 }
 
-class _LupaPassState extends State<LupaPass> {
-  TextEditingController emailTC = new TextEditingController();
-  TextEditingController telpTC = new TextEditingController();
+class _LupaPassPart2State extends State<LupaPassPart2> {
+  TextEditingController passTC = new TextEditingController();
+  TextEditingController reTC = new TextEditingController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool loading = false;
@@ -34,8 +35,8 @@ class _LupaPassState extends State<LupaPass> {
   @override
   void dispose() {
     super.dispose();
-    emailTC.dispose();
-    telpTC.dispose();
+    passTC.dispose();
+    reTC.dispose();
   }
 
   @override
@@ -70,6 +71,7 @@ class _LupaPassState extends State<LupaPass> {
             labelText: label,
             border: InputBorder.none,
           ),
+          obscureText: true,
           controller: controller,
           keyboardType: input,
         ),
@@ -88,10 +90,10 @@ class _LupaPassState extends State<LupaPass> {
               padding: EdgeInsets.all(10),
               child: Column(
                 children: [
-                  _textFormField(Icons.person, "Email", emailTC,
-                      TextInputType.emailAddress),
-                  _textFormField(
-                      Icons.phone, "No Telp", telpTC, TextInputType.number),
+                  _textFormField(Icons.person, "Password Baru", passTC,
+                      TextInputType.text),
+                  _textFormField(Icons.phone, "Konfimasi Password", reTC,
+                      TextInputType.text),
                   SizedBox(
                     height: 10,
                   ),
@@ -99,32 +101,12 @@ class _LupaPassState extends State<LupaPass> {
                     width: Get.width * 0.9,
                     color: Colors.blue,
                     function: () {
-                      _tryUpdate();
+                      _tryUpdatePart2();
                       // print("pressed");
                     },
-                    text: "Reset Password",
+                    text: "Simpan",
                     textColor: Colors.white,
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  RichText(
-                      text: TextSpan(
-                          text: "Kesulitan dalam verifikasi data anda ? ",
-                          style: TextStyle(color: Colors.black),
-                          children: [
-                        TextSpan(text: "klik "),
-                        TextSpan(
-                          text: "disini ",
-                          style: TextStyle(
-                              color: Colors.blue, fontWeight: FontWeight.bold),
-                          recognizer: new TapGestureRecognizer()
-                            ..onTap = () {
-                              _launchURL();
-                            },
-                        ),
-                        TextSpan(text: "klik disini untuk menghubungi kami"),
-                      ])),
                 ],
               ),
             ),
@@ -134,44 +116,44 @@ class _LupaPassState extends State<LupaPass> {
     );
   }
 
-  void _launchURL() async => await canLaunch(_url)
-      ? await launch(_url)
-      : throw 'Could not launch $_url';
-
-  void _tryUpdate() async {
-    if (emailTC.text.isEmpty || telpTC.text.isEmpty) {
+  void _tryUpdatePart2() async {
+    if (passTC.text.isEmpty || reTC.text.isEmpty) {
       Get.snackbar("Gagal", "Isi Semua Field");
     } else {
-      try {
-        setState(() {
-          loading = true;
-        });
-        await userController
-            .cariUserByEmailPhone(emailTC.text, telpTC.text)
-            .then((value) => {
-                  setState(() {
-                    message = value;
-                  })
-                });
-        print("update profile: $message");
-        if (message ==
-            "Identifikasi User Berhasil. Silahkan Masukkan Password Baru Anda.") {
-          _alertSuccess(context, message);
-        } else if (message == "Access Not Allowed") {
-          Token().removeToken();
-          Get.back();
-        } else {
-          Get.snackbar("Gagal edit profile", message);
-        }
-        setState(() {
-          loading = false;
-        });
-      } catch (e) {
-        setState(() {
-          loading = false;
-        });
+      if (passTC.text != reTC.text) {
+        Get.snackbar("Gagal", "Password & Konfirmasi Password Tidak Sama");
+      } else {
+        try {
+          setState(() {
+            loading = true;
+          });
+          await userController
+              .ubahPasswordByEmailPhone(
+                  widget.email, widget.phone, passTC.text, reTC.text)
+              .then((value) => {
+                    setState(() {
+                      message = value;
+                    })
+                  });
+          print("update profile: $message");
+          if (message == "Password Berhasi Diubah.") {
+            _alertSuccess(context, message);
+          } else if (message == "Access Not Allowed") {
+            Token().removeToken();
+            Get.back();
+          } else {
+            Get.snackbar("Gagal Ubah Password", message);
+          }
+          setState(() {
+            loading = false;
+          });
+        } catch (e) {
+          setState(() {
+            loading = false;
+          });
 
-        Get.snackbar("Gagal", "Terjadi Kesalahan");
+          Get.snackbar("Gagal", "Terjadi Kesalahan");
+        }
       }
     }
   }
@@ -180,10 +162,7 @@ class _LupaPassState extends State<LupaPass> {
     Widget okButton = TextButton(
         child: Text("OK"),
         onPressed: () {
-          Get.to(() => LupaPassPart2(
-                email: emailTC.text,
-                phone: telpTC.text,
-              ));
+          Get.offAll(() => LoginAnimation());
         });
     AlertDialog alert = AlertDialog(
       title: Text("Sukses"),

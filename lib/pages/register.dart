@@ -180,33 +180,42 @@ class _RegisterPageState extends State<RegisterPage>
   }
 
   void _registration() async {
-    try {
-      setState(() {
-        loading = true;
-      });
-      await userController
-          .regis(namaTC.text, telpTC.text, emailTC.text, addressTC.text,
-              ktpTC.text, passTC.text)
-          .then((value) => {
-                setState(() {
-                  message = value;
-                })
-              });
-      print("_regis: $message");
-      if (message == "Data Berhasil Ditambahkan !!") {
-        Get.offAll(() => LoginAnimation());
-      } else {
-        Get.snackbar("Gagal", message);
-      }
-      setState(() {
-        loading = false;
-      });
-    } catch (e) {
-      setState(() {
-        loading = false;
-      });
+    if (namaTC.text.isEmpty ||
+        telpTC.text.isEmpty ||
+        emailTC.text.isEmpty ||
+        addressTC.text.isEmpty ||
+        ktpTC.text.isEmpty ||
+        passTC.text.isEmpty) {
+      Get.snackbar("Gagal", "Isi Semua Field");
+    } else {
+      try {
+        setState(() {
+          loading = true;
+        });
+        await userController
+            .regis(namaTC.text, telpTC.text, emailTC.text, addressTC.text,
+                ktpTC.text, passTC.text)
+            .then((value) => {
+                  setState(() {
+                    message = value;
+                  })
+                });
+        print("_regis: $message");
+        if (message == "Data Berhasil Ditambahkan !!") {
+          Get.offAll(() => LoginAnimation());
+        } else {
+          Get.snackbar("Gagal", message);
+        }
+        setState(() {
+          loading = false;
+        });
+      } catch (e) {
+        setState(() {
+          loading = false;
+        });
 
-      Get.snackbar("Gagal", "Terjadi Kesalahan");
+        Get.snackbar("Gagal", "Terjadi Kesalahan");
+      }
     }
   }
 }

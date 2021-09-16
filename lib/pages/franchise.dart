@@ -190,47 +190,54 @@ class _FranchisePageState extends State<FranchisePage> {
   }
 
   void _buttonKirim() async {
-    try {
-      setState(() {
-        loading = true;
-      });
-      await userController
-          .franchiese(_namaTxt.text, _noHP.text, _sbujek.text, _pesan.text)
-          .then((value) => {
-                setState(() {
-                  message = value;
-                })
-              });
-      print("ini franchiese: $message");
-      if (message == "Data Berhasil Ditambahkan !!") {
-        // _showAlertDialoSuccess(context);
-        Get.dialog(AlertDialog(
-          title: Text("Success"),
-          content: Text(
-            "Pertanyaan Bisnis anda sudah kami terima!\nKami akan segera menghubungi anda melalui kontak yang sudah anda kirim.\nTerima Kasih",
-            textAlign: TextAlign.justify,
-          ),
-          actions: [
-            TextButton(
-                child: Text("OK"),
-                onPressed: () {
-                  // Navigator.pop(context);
-                  Get.back();
-                }),
-          ],
-        ));
-      } else {
-        Get.snackbar("Gagal", message);
+    if (_namaTxt.text.isEmpty ||
+        _noHP.text.isEmpty ||
+        _sbujek.text.isEmpty ||
+        _pesan.text.isEmpty) {
+      Get.snackbar("Gagal", "Isi Semua Field");
+    } else {
+      try {
+        setState(() {
+          loading = true;
+        });
+        await userController
+            .franchiese(_namaTxt.text, _noHP.text, _sbujek.text, _pesan.text)
+            .then((value) => {
+                  setState(() {
+                    message = value;
+                  })
+                });
+        print("ini franchiese: $message");
+        if (message == "Data Berhasil Ditambahkan !!") {
+          // _showAlertDialoSuccess(context);
+          Get.dialog(AlertDialog(
+            title: Text("Success"),
+            content: Text(
+              "Pertanyaan Bisnis anda sudah kami terima!\nKami akan segera menghubungi anda melalui kontak yang sudah anda kirim.\nTerima Kasih",
+              textAlign: TextAlign.justify,
+            ),
+            actions: [
+              TextButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    // Navigator.pop(context);
+                    Get.back();
+                  }),
+            ],
+          ));
+        } else {
+          Get.snackbar("Gagal", message);
+        }
+        setState(() {
+          loading = false;
+        });
+      } catch (e) {
+        setState(() {
+          loading = false;
+        });
+        print(e);
+        Get.snackbar("Gagal", "Terjadi Kesalahan");
       }
-      setState(() {
-        loading = false;
-      });
-    } catch (e) {
-      setState(() {
-        loading = false;
-      });
-      print(e);
-      Get.snackbar("Gagal", "Terjadi Kesalahan");
     }
   }
 }
