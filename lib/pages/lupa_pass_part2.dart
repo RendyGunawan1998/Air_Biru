@@ -23,7 +23,7 @@ class _LupaPassPart2State extends State<LupaPassPart2> {
   bool loading = false;
   String message = '';
 
-  String _url = "https://airminumbiru.com/contact.php";
+  // String _url = "https://airminumbiru.com/contact.php";
 
   UserController userController = UserController();
 

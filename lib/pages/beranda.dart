@@ -1,8 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:galon/controller/user_controller.dart';
 import 'package:galon/model/banners.dart';
+import 'package:galon/model/model_profile.dart';
 import 'package:galon/model/posts.dart';
 import 'package:galon/pages/baca.dart';
 import 'package:galon/pages/lihat.dart';
@@ -13,16 +16,79 @@ class BerandaPage extends StatefulWidget {
 }
 
 class _BerandaPageState extends State<BerandaPage> {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  late FlutterLocalNotificationsPlugin fltNotification;
+
   UserController userController = UserController();
+
   List<Posts> posts = [];
   List<Banners> banners = [];
+
   bool loadingPosts = true;
   bool loadingBanner = true;
+  bool loadingProfile = true;
+
+  Profile? profile;
+
   @override
   void initState() {
     getListPosts();
     getListBanner();
+    getProfile();
     super.initState();
+    notitficationPermission();
+    initMessaging();
+    updateFcmToken();
+  }
+
+  void notitficationPermission() async {
+    await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+  }
+
+  void initMessaging() {
+    var androiInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    var iosInit = IOSInitializationSettings();
+
+    var initSetting = InitializationSettings(android: androiInit, iOS: iosInit);
+
+    fltNotification = FlutterLocalNotificationsPlugin();
+
+    fltNotification.initialize(initSetting);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      showNotification(message);
+    });
+  }
+
+  void showNotification(RemoteMessage message) async {
+    var androidDetails =
+        AndroidNotificationDetails('1', 'channelName', 'channel Description');
+
+    var iosDetails = IOSNotificationDetails();
+
+    var generalNotificationDetails =
+        NotificationDetails(android: androidDetails, iOS: iosDetails);
+
+    // fltNotification.show(0, generalNotificationDetails)
+    RemoteNotification? notification = message.notification;
+
+    await fltNotification.show(notification.hashCode, notification?.title,
+        notification?.body, generalNotificationDetails,
+        payload: 'Notification');
+  }
+
+  updateFcmToken() async {
+    String? token = await messaging.getToken();
+    await userController.updateFCMToken(token!);
   }
 
   getListPosts() async {
@@ -54,6 +120,23 @@ class _BerandaPageState extends State<BerandaPage> {
     } catch (e) {
       setState(() {
         loadingBanner = false;
+      });
+      print(e);
+    }
+  }
+
+  getProfile() async {
+    try {
+      print("NOTIF");
+      var res = await userController.profil();
+      setState(() {
+        loadingProfile = false;
+        profile = res;
+      });
+      print("notif success");
+    } catch (e) {
+      setState(() {
+        loadingProfile = false;
       });
       print(e);
     }
@@ -120,7 +203,7 @@ class _BerandaPageState extends State<BerandaPage> {
                     Expanded(
                       flex: 6,
                       child: Text(
-                        "Nama Orang",
+                        profile?.name ?? '-',
                         style: TextStyle(color: Colors.black),
                       ),
                     ),

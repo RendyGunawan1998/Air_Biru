@@ -380,4 +380,36 @@ class UserController {
       throw ('terjadi kesalahan saat ubahPasswordByEmailPhone');
     }
   }
+
+  Future<String> updateFCMToken(String token) async {
+    var _url = "https://gebyarairminumbiru.com/api/user/update/fcm_token";
+
+    var _body = {'fcm_token': token};
+    print("ini url di updateFCMToken $_url");
+    print("ini body updateFCMToken " + json.encode(_body));
+    try {
+      var response = await http.put(
+        Uri.parse(_url),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          // "Authorization": "Bearer " + await token.getAccessToken(),
+        },
+        body: json.encode(_body),
+        // encoding:
+      );
+      // print(body);
+      print(response.body);
+      var res = json.decode(response.body);
+      if (response.statusCode == 200) {
+        // print(response.body);
+        // print(res);
+        return res['message'];
+      } else {
+        return res['error'];
+      }
+    } catch (e) {
+      throw ('terjadi kesalahan saat updateFCMToken');
+    }
+  }
 }

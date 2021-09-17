@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:galon/controller/user_controller.dart';
 import 'package:galon/helper/token.dart';
 import 'package:galon/model/model_profile.dart';
-import 'package:galon/pages/login.dart';
-import 'package:galon/pages/profile.dart';
+// import 'package:galon/pages/login.dart';
+// import 'package:galon/pages/profile.dart';
 import 'package:galon/widget/input_widget.dart';
 import 'package:galon/widget/submit_button_widget.dart';
 import 'package:get/get.dart';
@@ -96,7 +96,7 @@ class _EditPageState extends State<EditPage> {
   }
 
   Widget _buildBody() {
-    var size = MediaQuery.of(context).size;
+    // var size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

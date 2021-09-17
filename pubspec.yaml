@@ -39,6 +39,9 @@ dependencies:
   google_sign_in: ^5.1.0
   image_picker: ^0.7.5
   url_launcher: ^6.0.10
+  firebase_core: ^1.6.0
+  firebase_messaging: ^10.0.7
+  flutter_local_notifications: ^8.2.0
 
 dev_dependencies:
   flutter_test:
