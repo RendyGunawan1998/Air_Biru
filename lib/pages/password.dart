@@ -81,7 +81,7 @@ class _PasswordPageState extends State<PasswordPage> {
   }
 
   Widget _buildBody() {
-    var size = MediaQuery.of(context).size;
+    // var size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -20,7 +20,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   UserController userController = UserController();
-  late Profile profile;
+  Profile? profile;
 
   bool loading = true;
 
@@ -103,14 +103,14 @@ class _ProfilePageState extends State<ProfilePage>
             ),
           ),
           title: Text(
-            profile.name,
+            profile?.name ?? '-',
             style: TextStyle(
               fontSize: 18,
               color: Colors.black54,
             ),
           ),
           subtitle: Text(
-            profile.email,
+            profile?.email ?? '-',
             style: TextStyle(
               fontSize: 18,
               color: Colors.black54,
@@ -121,7 +121,7 @@ class _ProfilePageState extends State<ProfilePage>
             onPressed: () {
               print('edit');
               Get.to(() => EditPage(
-                    profile: profile,
+                    profile: profile!,
                   ));
             },
           ),
