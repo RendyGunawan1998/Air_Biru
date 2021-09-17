@@ -27,7 +27,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_nav_bar: ^5.0.2
   shared_preferences: ^2.0.5
-  # qrscan: ^0.3.2
   permission_handler: ^8.1.4+2
   get: ^4.3.8
   equatable: ^2.0.2
@@ -39,6 +38,7 @@ dependencies:
   google_sign_in: ^5.1.0
   image_picker: ^0.7.5
   url_launcher: ^6.0.10
+  firebase_messaging: ^10.0.7
 
 dev_dependencies:
   flutter_test:
