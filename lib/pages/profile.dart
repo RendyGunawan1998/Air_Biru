@@ -13,6 +13,8 @@ import 'package:galon/pages/upload_ktp.dart';
 import 'package:get/get.dart';
 import 'dart:math' as math;
 
+import 'package:google_sign_in/google_sign_in.dart';
+
 class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -21,6 +23,8 @@ class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   UserController userController = UserController();
   Profile? profile;
+
+  GoogleSignIn _googleSignIn = GoogleSignIn();
 
   bool loading = true;
 
@@ -246,6 +250,7 @@ class _ProfilePageState extends State<ProfilePage>
           ListTile(
             onTap: () async {
               await Token().removeToken();
+              _googleSignIn.signOut();
               Get.offAll(() => LoginAnimation());
             },
             title: Text(

@@ -76,23 +76,25 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
       ),
       body: loadingNotif
           ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: ListView.builder(
-              // scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: notifs.length,
-              itemBuilder: (context, i) {
-                return Card(
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      child: Text((i + 1).toString()),
-                    ),
-                    title: Text(notifs[i].title),
-                    subtitle: Text(notifs[i].description),
-                  ),
-                );
-              },
-            )),
+          : notifs.length > 0
+              ? SingleChildScrollView(
+                  child: ListView.builder(
+                  // scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: notifs.length,
+                  itemBuilder: (context, i) {
+                    return Card(
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          child: Text((i + 1).toString()),
+                        ),
+                        title: Text(notifs[i].title),
+                        subtitle: Text(notifs[i].description),
+                      ),
+                    );
+                  },
+                ))
+              : Center(child: Text('Tidak Ada Data')),
     );
   }
 

@@ -234,6 +234,7 @@ class UserController {
           "Authorization": "Bearer " + await token.getAccessToken(),
         },
       );
+      print(response.body);
       if (response.statusCode == 200) {
         return Profile.fromJson(jsonDecode(response.body));
       } else {
