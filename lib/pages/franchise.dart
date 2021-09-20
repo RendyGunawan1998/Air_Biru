@@ -133,7 +133,7 @@ class _FranchisePageState extends State<FranchisePage> {
                                           labelText: "Pesan",
                                           border: InputBorder.none),
                                       controller: _pesan,
-                                      maxLines: 7,
+                                      maxLines: 6,
                                       onSaved: (value) {
                                         _pesan.text = value!;
                                       },
@@ -142,11 +142,26 @@ class _FranchisePageState extends State<FranchisePage> {
                                   SizedBox(
                                     height: 15,
                                   ),
-                                  SubmitButtonWidget(
-                                    function: () {
-                                      _buttonKirim();
-                                    },
-                                    text: "KIRIM",
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      SubmitButtonWidget(
+                                        width: Get.width * 0.35,
+                                        function: () {
+                                          _buttonKirim();
+                                        },
+                                        text: "KIRIM",
+                                      ),
+                                      SubmitButtonWidget(
+                                        color: Colors.grey,
+                                        width: Get.width * 0.35,
+                                        function: () {
+                                          _buttonReset();
+                                        },
+                                        text: "RESET",
+                                      ),
+                                    ],
                                   ),
                                   // SizedBox(
                                   //   width: 300,
@@ -188,6 +203,15 @@ class _FranchisePageState extends State<FranchisePage> {
                   ),
                 ),
               ));
+  }
+
+  void _buttonReset() {
+    setState(() {
+      _namaTxt.text = "";
+      _noHP.text = "";
+      _sbujek.text = "";
+      _pesan.text = "";
+    });
   }
 
   void _buttonKirim() async {
