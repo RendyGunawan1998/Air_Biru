@@ -22,11 +22,27 @@ class _ScanPageState extends State<ScanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(),
-      // ),
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Center(
+          child: Text(
+            "QR",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black),
+          ),
+        ),
+      ),
       body: Center(
-        child: Text("Hello"),
+        child: Card(
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Event sudah selesai. \nTunggu event menarik berikutnya",
+            textAlign: TextAlign.center,
+          ),
+        )),
       ),
     );
   }

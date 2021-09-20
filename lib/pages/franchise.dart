@@ -56,7 +56,7 @@ class _FranchisePageState extends State<FranchisePage> {
                     children: [
                       Container(
                         width: Get.width,
-                        height: 590,
+                        height: MediaQuery.of(context).size.height,
                         color: Colors.grey[200],
                         child: Column(
                           children: [
@@ -123,6 +123,7 @@ class _FranchisePageState extends State<FranchisePage> {
                                   SizedBox(
                                     height: 15,
                                   ),
+
                                   InputWidget(
                                     child: TextFormField(
                                       decoration: InputDecoration(
@@ -132,7 +133,7 @@ class _FranchisePageState extends State<FranchisePage> {
                                           labelText: "Pesan",
                                           border: InputBorder.none),
                                       controller: _pesan,
-                                      maxLines: 3,
+                                      maxLines: 7,
                                       onSaved: (value) {
                                         _pesan.text = value!;
                                       },

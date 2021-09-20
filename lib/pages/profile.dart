@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:galon/controller/user_controller.dart';
-// import 'package:galon/controller/user_controller.dart';
 import 'package:galon/helper/token.dart';
 import 'package:galon/model/model_profile.dart';
 import 'package:galon/pages/edit.dart';
-// import 'package:galon/model/model_profile.dart';
 import 'package:galon/pages/login.dart';
 import 'package:galon/pages/password.dart';
 import 'package:galon/pages/upload_ktp.dart';
 import 'package:get/get.dart';
 import 'dart:math' as math;
+
+import 'package:google_sign_in/google_sign_in.dart';
 
 class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
@@ -20,7 +20,9 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   UserController userController = UserController();
-  late Profile profile;
+  Profile? profile;
+
+  GoogleSignIn _googleSignIn = GoogleSignIn();
 
   bool loading = true;
 
@@ -103,16 +105,16 @@ class _ProfilePageState extends State<ProfilePage>
             ),
           ),
           title: Text(
-            profile.name,
+            profile?.name ?? '-',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 15,
               color: Colors.black54,
             ),
           ),
           subtitle: Text(
-            profile.email,
+            profile?.email ?? '-',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 14,
               color: Colors.black54,
             ),
           ),
@@ -121,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage>
             onPressed: () {
               print('edit');
               Get.to(() => EditPage(
-                    profile: profile,
+                    profile: profile!,
                   ));
             },
           ),
@@ -246,6 +248,7 @@ class _ProfilePageState extends State<ProfilePage>
           ListTile(
             onTap: () async {
               await Token().removeToken();
+              _googleSignIn.signOut();
               Get.offAll(() => LoginAnimation());
             },
             title: Text(

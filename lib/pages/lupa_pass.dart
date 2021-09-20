@@ -108,23 +108,27 @@ class _LupaPassState extends State<LupaPass> {
                   SizedBox(
                     height: 10,
                   ),
-                  RichText(
-                      text: TextSpan(
-                          text: "Kesulitan dalam verifikasi data anda ? ",
-                          style: TextStyle(color: Colors.black),
-                          children: [
-                        TextSpan(text: "klik "),
-                        TextSpan(
-                          text: "disini ",
-                          style: TextStyle(
-                              color: Colors.blue, fontWeight: FontWeight.bold),
-                          recognizer: new TapGestureRecognizer()
-                            ..onTap = () {
-                              _launchURL();
-                            },
-                        ),
-                        TextSpan(text: "klik disini untuk menghubungi kami"),
-                      ])),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
+                    child: RichText(
+                        text: TextSpan(
+                            text: "Kesulitan dalam verifikasi data anda ? ",
+                            style: TextStyle(color: Colors.black),
+                            children: [
+                          TextSpan(text: "klik "),
+                          TextSpan(
+                            text: "disini ",
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
+                            recognizer: new TapGestureRecognizer()
+                              ..onTap = () {
+                                _launchURL();
+                              },
+                          ),
+                          TextSpan(text: "klik disini untuk menghubungi kami"),
+                        ])),
+                  ),
                 ],
               ),
             ),

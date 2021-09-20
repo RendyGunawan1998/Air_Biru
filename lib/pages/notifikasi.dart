@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:galon/controller/user_controller.dart';
 import 'package:galon/model/notif.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -31,7 +32,6 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
   void initState() {
     getListNotif();
     super.initState();
-    // refreshList();
   }
 
   getListNotif() async {
@@ -76,31 +76,31 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
       ),
       body: loadingNotif
           ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: ListView.builder(
-              // scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: notifs.length,
-              itemBuilder: (context, i) {
-                return Card(
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      child: Text((i + 1).toString()),
-                    ),
-                    title: Text(notifs[i].title),
-                    subtitle: Text(notifs[i].description),
-                  ),
-                );
-              },
-            )),
+          : notifs.length > 0
+              ? SingleChildScrollView(
+                  child: ListView.builder(
+                  // scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: notifs.length,
+                  itemBuilder: (context, i) {
+                    return Card(
+                      child: ListTile(
+                        onTap: () async {
+                          print("onTap notif");
+                          await canLaunch(notifs[i].actionUrl)
+                              ? await launch(notifs[i].actionUrl)
+                              : Container();
+                        },
+                        leading: CircleAvatar(
+                          child: Text((i + 1).toString()),
+                        ),
+                        title: Text(notifs[i].title),
+                        subtitle: Text(notifs[i].description),
+                      ),
+                    );
+                  },
+                ))
+              : Center(child: Text('Tidak Ada Data')),
     );
   }
-
-  // Future _getNotif() async {
-  //   try {
-  //     await userController.notif();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 }
