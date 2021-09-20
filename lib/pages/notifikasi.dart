@@ -89,7 +89,7 @@ class _NotifikasiPageState extends State<NotifikasiPage> {
                           print("onTap notif");
                           await canLaunch(notifs[i].actionUrl)
                               ? await launch(notifs[i].actionUrl)
-                              : Container();
+                              : print('kosong');
                         },
                         leading: CircleAvatar(
                           child: Text((i + 1).toString()),
