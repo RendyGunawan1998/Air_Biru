@@ -2,11 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:galon/controller/user_controller.dart';
-// import 'package:galon/controller/user_controller.dart';
 import 'package:galon/helper/token.dart';
 import 'package:galon/model/model_profile.dart';
 import 'package:galon/pages/edit.dart';
-// import 'package:galon/model/model_profile.dart';
 import 'package:galon/pages/login.dart';
 import 'package:galon/pages/password.dart';
 import 'package:galon/pages/upload_ktp.dart';
@@ -109,14 +107,14 @@ class _ProfilePageState extends State<ProfilePage>
           title: Text(
             profile?.name ?? '-',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 15,
               color: Colors.black54,
             ),
           ),
           subtitle: Text(
             profile?.email ?? '-',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 14,
               color: Colors.black54,
             ),
           ),

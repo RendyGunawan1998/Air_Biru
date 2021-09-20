@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:galon/model/posts.dart';
+import 'package:galon/widget/submit_button_widget.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Baca extends StatelessWidget {
   final Posts posts;
@@ -37,12 +40,12 @@ class Baca extends StatelessWidget {
         children: [
           Image.network(posts.image),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(25, 8, 25, 15),
             child: Column(
               children: [
                 Text(
                   posts.title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   textAlign: TextAlign.justify,
                 ),
                 SizedBox(
@@ -51,7 +54,12 @@ class Baca extends StatelessWidget {
                 Text(
                   posts.description,
                   textAlign: TextAlign.justify,
+                  style: TextStyle(fontSize: 14),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                _buildButtonIsi(),
               ],
             ),
           )
@@ -59,4 +67,21 @@ class Baca extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildButtonIsi() {
+    return SubmitButtonWidget(
+      width: Get.width * 0.75,
+      color: Colors.blueAccent[100],
+      function: () {
+        print("ini button isi");
+        _launchURL();
+      },
+      text: posts.actionUrlLabel,
+      textColor: Colors.white,
+    );
+  }
+
+  void _launchURL() async => await canLaunch(posts.actionUrl)
+      ? await launch(posts.actionUrl)
+      : throw 'Could not launch ${posts.actionUrl}';
 }

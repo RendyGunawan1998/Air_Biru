@@ -224,7 +224,7 @@ class _BerandaPageState extends State<BerandaPage> {
             loadingBanner
                 ? Center(child: CircularProgressIndicator())
                 : CarouselSlider(
-                    options: CarouselOptions(height: 150),
+                    options: CarouselOptions(height: 230),
                     items: banners.map((i) {
                       return Builder(
                         builder: (BuildContext context) {
