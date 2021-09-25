@@ -7,12 +7,49 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:726133478671:android:0de41975ea286439d2da7a",
+        "android_client_info": {
+          "package_name": "com.airminumbiru"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726133478671-20ot04099ke3e8d63c7e6tnj25ucgkj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQx32dz4s1N4Dep_cZNyFeHA4Xh0IKj28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726133478671-20ot04099ke3e8d63c7e6tnj25ucgkj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:726133478671:android:58d4b64f449a4be6d2da7a",
         "android_client_info": {
           "package_name": "com.example.galon"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "726133478671-i42pnjd0d1gfbrb1epcm6tjq6odtkkiu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.galon",
+            "certificate_hash": "744c7d75fc4e2e2febab619158afcc11a41982c5"
+          }
+        },
         {
           "client_id": "726133478671-20ot04099ke3e8d63c7e6tnj25ucgkj4.apps.googleusercontent.com",
           "client_type": 3

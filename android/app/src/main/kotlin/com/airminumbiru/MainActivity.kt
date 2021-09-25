@@ -1,4 +1,4 @@
-package com.example.galon
+package com.airminumbiru
 
 import io.flutter.embedding.android.FlutterActivity
 

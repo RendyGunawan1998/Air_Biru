@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:galon/model/posts.dart';
 import 'package:galon/widget/submit_button_widget.dart';
@@ -38,7 +39,12 @@ class Baca extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Image.network(posts.image),
+          CachedNetworkImage(
+            imageUrl: posts.image,
+            placeholder: (context, url) =>
+                Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(25, 8, 25, 15),
             child: Column(

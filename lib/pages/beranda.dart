@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -152,105 +153,117 @@ class _BerandaPageState extends State<BerandaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.white,
-      //   elevation: 0,
-      //   title: ,
-      // ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: Get.width,
-                height: 50,
-                margin: const EdgeInsets.fromLTRB(0, 12, 0, 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(30),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 1,
-                      offset: Offset(0, 0), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          border: Border.all(width: 2, color: Colors.blue),
-                        ),
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      flex: 6,
-                      child: Text(
-                        profile?.name ?? '-',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    // SizedBox(
-                    //   width: 10,
-                    // ),
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 3, bottom: 3),
-                        child: Image.asset("assets/images/logo.jpg"),
-                      ),
-                    ),
-                  ],
-                ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: Get.width,
+            height: 50,
+            margin: const EdgeInsets.fromLTRB(0, 12, 0, 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.white),
+              borderRadius: BorderRadius.all(
+                Radius.circular(30),
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 1,
+                  offset: Offset(0, 0), // changes position of shadow
+                ),
+              ],
             ),
-            loadingBanner
-                ? Center(child: CircularProgressIndicator())
-                : CarouselSlider(
-                    options: CarouselOptions(height: 230),
-                    items: banners.map((i) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return InkWell(
-                            onTap: () {
-                              Get.to(() => Lihat(
-                                    posts: i,
-                                  ));
-                            },
-                            child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                // decoration: BoxDecoration(color: Colors.amber),
-                                child:
-                                    Image.network(i.image, fit: BoxFit.cover)),
-                          );
-                        },
-                      );
-                    }).toList(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      border: Border.all(width: 2, color: Colors.blue),
+                    ),
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.blue,
+                    ),
                   ),
-            Expanded(
-              child: loadingPosts
-                  ? Center(child: CircularProgressIndicator())
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  flex: 6,
+                  child: Text(
+                    profile?.name ?? '-',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+                // SizedBox(
+                //   width: 10,
+                // ),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 3, bottom: 3),
+                    child: Image.asset("assets/images/logo.jpg"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              loadingBanner
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  : CarouselSlider(
+                      options: CarouselOptions(height: 230),
+                      items: banners.map((i) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return InkWell(
+                                onTap: () {
+                                  Get.to(() => Lihat(
+                                        posts: i,
+                                      ));
+                                },
+                                child: Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 5.0),
+                                    // decoration: BoxDecoration(color: Colors.amber),
+                                    child: CachedNetworkImage(
+                                      imageUrl: i.image,
+                                      placeholder: (context, url) => Center(
+                                          child: CircularProgressIndicator()),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    )));
+                          },
+                        );
+                      }).toList(),
+                    ),
+              loadingPosts
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    )
                   : Container(
-                      padding: EdgeInsets.all(15),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: Get.width * 0.1),
                       child: StaggeredGridView.countBuilder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
                         crossAxisCount: 2,
                         itemCount: posts.length,
                         itemBuilder: (BuildContext context, int index) {
@@ -262,8 +275,8 @@ class _BerandaPageState extends State<BerandaPage> {
                         crossAxisSpacing: 2.0,
                       ),
                     ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -288,7 +301,12 @@ class CardBerita extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(posts.image),
+          CachedNetworkImage(
+            imageUrl: posts.image,
+            placeholder: (context, url) =>
+                Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             child: Text(

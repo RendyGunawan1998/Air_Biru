@@ -13,6 +13,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Token token = Token();
+  // String? tknExist;
   bool isLogin = false;
 
   @override
@@ -28,14 +29,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   splashStart() async {
     var duration = const Duration(seconds: 2);
-    await token.getAccessToken().then((value) => () {
-          if (value != "") {
-            setState(() {
-              isLogin = true;
-            });
-          }
-        });
-    if (isLogin) {
+    String tkn = await token.getAccessToken();
+    if (tkn.isNotEmpty) {
+      setState(() {
+        isLogin = true;
+        // tknExist = tkn;
+      });
+    }
+    if (isLogin == true) {
       return Timer(duration, () {
         Get.offAll(() => LoadingScreen());
       });
@@ -59,6 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 200,
               height: 250,
             ),
+            // Text(tknExist!)
           ],
         ),
       ),
