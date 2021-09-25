@@ -8,7 +8,7 @@
         </intent>
     </queries>
    <application
-        android:label="galon"
+        android:label="Air Minum Biru"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
