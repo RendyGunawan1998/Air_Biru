@@ -57,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage>
     return Scaffold(
       backgroundColor: Colors.blue,
       // Color(0xff21254A),
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       body: loading == false
           ? _buildBody()
           : Center(
@@ -68,95 +68,98 @@ class _RegisterPageState extends State<RegisterPage>
   }
 
   Widget _buildBody() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(height: 20),
-          Expanded(child: Container()),
-          Image.asset(
-            "assets/images/logo.jpg",
-            width: Get.width * 0.3,
-          ),
-          SizedBox(height: 20),
-          Form(
-            key: formKey,
-            child: Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  InputWidget(
-                    child: TextFormField(
-                        decoration: InputDecoration(
-                          // hintText: "Masukkan Email",
-                          labelText: "Nama",
-                          border: InputBorder.none,
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        controller: namaTC),
-                  ),
-                  SizedBox(height: 10),
-                  InputWidget(
-                    child: TextFormField(
-                        decoration: InputDecoration(
-                          // hintText: "Masukkan Email",
-                          labelText: "No Telp",
-                          border: InputBorder.none,
-                        ),
-                        keyboardType: TextInputType.number,
-                        controller: telpTC),
-                  ),
-                  SizedBox(height: 10),
-                  InputWidget(
-                    child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: "No KTP",
-                          border: InputBorder.none,
-                        ),
-                        keyboardType: TextInputType.number,
-                        controller: ktpTC),
-                  ),
-                  SizedBox(height: 10),
-                  InputWidget(
-                    child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: "Alamat",
-                          border: InputBorder.none,
-                        ),
-                        controller: addressTC),
-                  ),
-                  SizedBox(height: 10),
-                  InputWidget(
-                    child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: "Email",
-                          border: InputBorder.none,
-                        ),
-                        controller: emailTC),
-                  ),
-                  SizedBox(height: 10),
-                  InputWidget(
-                    child: TextFormField(
-                        decoration: InputDecoration(
-                            labelText: "Password", border: InputBorder.none),
-                        controller: passTC),
-                  ),
-                ],
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: 80),
+              Image.asset(
+                "assets/images/logo.jpg",
+                width: Get.width * 0.3,
               ),
-            ),
+              SizedBox(height: 20),
+              Form(
+                key: formKey,
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      InputWidget(
+                        child: TextFormField(
+                            decoration: InputDecoration(
+                              // hintText: "Masukkan Email",
+                              labelText: "Nama",
+                              border: InputBorder.none,
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            controller: namaTC),
+                      ),
+                      SizedBox(height: 10),
+                      InputWidget(
+                        child: TextFormField(
+                            decoration: InputDecoration(
+                              // hintText: "Masukkan Email",
+                              labelText: "No Telp",
+                              border: InputBorder.none,
+                            ),
+                            keyboardType: TextInputType.number,
+                            controller: telpTC),
+                      ),
+                      SizedBox(height: 10),
+                      InputWidget(
+                        child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "No KTP",
+                              border: InputBorder.none,
+                            ),
+                            keyboardType: TextInputType.number,
+                            controller: ktpTC),
+                      ),
+                      SizedBox(height: 10),
+                      InputWidget(
+                        child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Alamat",
+                              border: InputBorder.none,
+                            ),
+                            controller: addressTC),
+                      ),
+                      SizedBox(height: 10),
+                      InputWidget(
+                        child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Email",
+                              border: InputBorder.none,
+                            ),
+                            controller: emailTC),
+                      ),
+                      SizedBox(height: 10),
+                      InputWidget(
+                        child: TextFormField(
+                            decoration: InputDecoration(
+                                labelText: "Password",
+                                border: InputBorder.none),
+                            controller: passTC),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              _buildButtonRegis(),
+              SizedBox(height: 20),
+              Text(
+                'Air Minum Biru | Versi 1.0.10',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
           ),
-          SizedBox(height: 10),
-          _buildButtonRegis(),
-          SizedBox(height: 20),
-          Expanded(child: Container()),
-          Text(
-            'Air Minum Biru | Versi 1.0.10',
-            style: TextStyle(color: Colors.white),
-          ),
-        ],
+        ),
       ),
     );
   }
