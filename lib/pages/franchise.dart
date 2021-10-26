@@ -219,7 +219,8 @@ class _FranchisePageState extends State<FranchisePage> {
         _noHP.text.isEmpty ||
         _sbujek.text.isEmpty ||
         _pesan.text.isEmpty) {
-      Get.snackbar("Gagal", "Isi Semua Field");
+      Get.snackbar("Gagal", "Isi Semua Field",
+          backgroundColor: Colors.white, colorText: Colors.red);
     } else {
       try {
         setState(() {
@@ -251,7 +252,8 @@ class _FranchisePageState extends State<FranchisePage> {
             ],
           ));
         } else {
-          Get.snackbar("Gagal", message);
+          Get.snackbar("Gagal", message,
+              backgroundColor: Colors.white, colorText: Colors.red);
         }
         setState(() {
           loading = false;
@@ -261,7 +263,8 @@ class _FranchisePageState extends State<FranchisePage> {
           loading = false;
         });
         print(e);
-        Get.snackbar("Gagal", "Terjadi Kesalahan");
+        Get.snackbar("Gagal", "Terjadi Kesalahan",
+            backgroundColor: Colors.white, colorText: Colors.red);
       }
     }
   }

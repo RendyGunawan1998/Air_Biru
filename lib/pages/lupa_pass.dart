@@ -144,7 +144,8 @@ class _LupaPassState extends State<LupaPass> {
 
   void _tryUpdate() async {
     if (emailTC.text.isEmpty || telpTC.text.isEmpty) {
-      Get.snackbar("Gagal", "Isi Semua Field");
+      Get.snackbar("Gagal", "Isi Semua Field",
+          backgroundColor: Colors.white, colorText: Colors.red);
     } else {
       try {
         setState(() {
@@ -165,7 +166,8 @@ class _LupaPassState extends State<LupaPass> {
           Token().removeToken();
           Get.back();
         } else {
-          Get.snackbar("Gagal edit profile", message);
+          Get.snackbar("Gagal edit profile", message,
+              backgroundColor: Colors.white, colorText: Colors.red);
         }
         setState(() {
           loading = false;
@@ -175,7 +177,8 @@ class _LupaPassState extends State<LupaPass> {
           loading = false;
         });
 
-        Get.snackbar("Gagal", "Terjadi Kesalahan");
+        Get.snackbar("Gagal", "Terjadi Kesalahan",
+            backgroundColor: Colors.white, colorText: Colors.red);
       }
     }
   }

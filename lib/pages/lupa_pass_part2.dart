@@ -118,10 +118,12 @@ class _LupaPassPart2State extends State<LupaPassPart2> {
 
   void _tryUpdatePart2() async {
     if (passTC.text.isEmpty || reTC.text.isEmpty) {
-      Get.snackbar("Gagal", "Isi Semua Field");
+      Get.snackbar("Gagal", "Isi Semua Field",
+          backgroundColor: Colors.white, colorText: Colors.red);
     } else {
       if (passTC.text != reTC.text) {
-        Get.snackbar("Gagal", "Password & Konfirmasi Password Tidak Sama");
+        Get.snackbar("Gagal", "Password & Konfirmasi Password Tidak Sama",
+            backgroundColor: Colors.white, colorText: Colors.red);
       } else {
         try {
           setState(() {
@@ -142,7 +144,8 @@ class _LupaPassPart2State extends State<LupaPassPart2> {
             Token().removeToken();
             Get.back();
           } else {
-            Get.snackbar("Gagal Ubah Password", message);
+            Get.snackbar("Gagal Ubah Password", message,
+                backgroundColor: Colors.white, colorText: Colors.red);
           }
           setState(() {
             loading = false;
@@ -152,7 +155,8 @@ class _LupaPassPart2State extends State<LupaPassPart2> {
             loading = false;
           });
 
-          Get.snackbar("Gagal", "Terjadi Kesalahan");
+          Get.snackbar("Gagal", "Terjadi Kesalahan",
+              backgroundColor: Colors.white, colorText: Colors.red);
         }
       }
     }

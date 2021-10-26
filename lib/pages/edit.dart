@@ -142,7 +142,8 @@ class _EditPageState extends State<EditPage> {
         emailTC.text.isEmpty ||
         alamatTC.text.isEmpty ||
         ktpTC.text.isEmpty) {
-      Get.snackbar("Gagal", "Isi Semua Field");
+      Get.snackbar("Gagal", "Isi Semua Field",
+          backgroundColor: Colors.white, colorText: Colors.red);
     } else {
       try {
         setState(() {
@@ -163,7 +164,8 @@ class _EditPageState extends State<EditPage> {
           Token().removeToken();
           Get.back();
         } else {
-          Get.snackbar("Gagal edit profile", message);
+          Get.snackbar("Gagal edit profile", message,
+              backgroundColor: Colors.white, colorText: Colors.red);
         }
         setState(() {
           loading = false;
@@ -173,7 +175,8 @@ class _EditPageState extends State<EditPage> {
           loading = false;
         });
 
-        Get.snackbar("Gagal", "Terjadi Kesalahan");
+        Get.snackbar("Gagal", "Terjadi Kesalahan",
+            backgroundColor: Colors.white, colorText: Colors.red);
       }
     }
   }

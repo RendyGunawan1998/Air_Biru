@@ -69,6 +69,7 @@ class _PasswordPageState extends State<PasswordPage> {
           ),
           controller: controller,
           keyboardType: input,
+          obscureText: true,
         ),
       ),
     );
@@ -151,7 +152,8 @@ class _PasswordPageState extends State<PasswordPage> {
             Token().removeToken();
             Get.back();
           } else {
-            Get.snackbar("Gagal edit Password", message);
+            Get.snackbar("Gagal edit Password", message,
+                backgroundColor: Colors.white, colorText: Colors.red);
           }
           setState(() {
             loading = false;
@@ -161,13 +163,16 @@ class _PasswordPageState extends State<PasswordPage> {
             loading = false;
           });
 
-          Get.snackbar("Gagal", e.toString());
+          Get.snackbar("Gagal", e.toString(),
+              backgroundColor: Colors.white, colorText: Colors.red);
         }
       } else {
-        Get.snackbar("Gagal", "Password & Konfirmasi Password Tidak Sama");
+        Get.snackbar("Gagal", "Password & Konfirmasi Password Tidak Sama",
+            backgroundColor: Colors.white, colorText: Colors.red);
       }
     } else {
-      Get.snackbar("Gagal", "Isi Semua Data");
+      Get.snackbar("Gagal", "Isi Semua Data",
+          backgroundColor: Colors.white, colorText: Colors.red);
     }
   }
 

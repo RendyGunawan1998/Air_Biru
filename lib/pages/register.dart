@@ -141,6 +141,7 @@ class _RegisterPageState extends State<RegisterPage>
                       SizedBox(height: 10),
                       InputWidget(
                         child: TextFormField(
+                            obscureText: true,
                             decoration: InputDecoration(
                                 labelText: "Password",
                                 border: InputBorder.none),
@@ -189,7 +190,8 @@ class _RegisterPageState extends State<RegisterPage>
         addressTC.text.isEmpty ||
         ktpTC.text.isEmpty ||
         passTC.text.isEmpty) {
-      Get.snackbar("Gagal", "Isi Semua Field");
+      Get.snackbar("Gagal", "Isi Semua Field",
+          backgroundColor: Colors.white, colorText: Colors.red);
     } else {
       try {
         setState(() {
@@ -207,7 +209,8 @@ class _RegisterPageState extends State<RegisterPage>
         if (message == "Data Berhasil Ditambahkan !!") {
           Get.offAll(() => LoginAnimation());
         } else {
-          Get.snackbar("Gagal", message);
+          Get.snackbar("Gagal", message,
+              backgroundColor: Colors.white, colorText: Colors.red);
         }
         setState(() {
           loading = false;
@@ -217,7 +220,8 @@ class _RegisterPageState extends State<RegisterPage>
           loading = false;
         });
 
-        Get.snackbar("Gagal", "Terjadi Kesalahan");
+        Get.snackbar("Gagal", "Terjadi Kesalahan",
+            backgroundColor: Colors.white, colorText: Colors.red);
       }
     }
   }

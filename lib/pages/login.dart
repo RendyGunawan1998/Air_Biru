@@ -229,7 +229,8 @@ class _LoginAnimationState extends State<LoginAnimation>
 
   void _testLogin() async {
     if (userTC.text.isEmpty || passTC.text.isEmpty) {
-      Get.snackbar("Gagal", "Isi Semua Field");
+      Get.snackbar("Gagal", "Isi Semua Field",
+          backgroundColor: Colors.white, colorText: Colors.red);
     } else {
       try {
         setState(() {
@@ -244,7 +245,8 @@ class _LoginAnimationState extends State<LoginAnimation>
         if (message == "Login Berhasil !!") {
           Get.offAll(() => LoadingScreen());
         } else {
-          Get.snackbar("Gagal", message);
+          Get.snackbar("Gagal", message,
+              backgroundColor: Colors.white, colorText: Colors.red);
         }
         setState(() {
           loading = false;
@@ -254,7 +256,8 @@ class _LoginAnimationState extends State<LoginAnimation>
           loading = false;
         });
 
-        Get.snackbar("Gagal", "Terjadi Kesalahan");
+        Get.snackbar("Gagal", "Terjadi Kesalahan",
+            backgroundColor: Colors.white, colorText: Colors.red);
       }
     }
   }
